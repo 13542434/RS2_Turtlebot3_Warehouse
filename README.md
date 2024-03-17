@@ -1,1 +1,0 @@
-# RS2_Turtlebot3_Warehouse
