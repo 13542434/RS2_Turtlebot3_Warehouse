@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/charlize-2/git/RS2_Turtlebot3_Warehouse/build",
+  "command": "/usr/bin/c++    -std=c++17 -g -o CMakeFiles/taskallocation.dir/taskallocation.cpp.o -c /home/charlize-2/git/RS2_Turtlebot3_Warehouse/taskallocation.cpp",
+  "file": "/home/charlize-2/git/RS2_Turtlebot3_Warehouse/taskallocation.cpp"
+},
+{
+  "directory": "/home/charlize-2/git/RS2_Turtlebot3_Warehouse/build",
+  "command": "/usr/bin/c++    -std=c++17 -g -o CMakeFiles/taskallocation.dir/order.cpp.o -c /home/charlize-2/git/RS2_Turtlebot3_Warehouse/order.cpp",
+  "file": "/home/charlize-2/git/RS2_Turtlebot3_Warehouse/order.cpp"
+},
+{
+  "directory": "/home/charlize-2/git/RS2_Turtlebot3_Warehouse/build",
+  "command": "/usr/bin/c++    -std=c++17 -g -o CMakeFiles/main.dir/main.cpp.o -c /home/charlize-2/git/RS2_Turtlebot3_Warehouse/main.cpp",
+  "file": "/home/charlize-2/git/RS2_Turtlebot3_Warehouse/main.cpp"
+}
+]

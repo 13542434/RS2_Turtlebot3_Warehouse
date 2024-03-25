@@ -1,0 +1,4 @@
+/home/charlize-2/git/RS2_Turtlebot3_Warehouse/build/CMakeFiles/taskallocation.dir
+/home/charlize-2/git/RS2_Turtlebot3_Warehouse/build/CMakeFiles/main.dir
+/home/charlize-2/git/RS2_Turtlebot3_Warehouse/build/CMakeFiles/edit_cache.dir
+/home/charlize-2/git/RS2_Turtlebot3_Warehouse/build/CMakeFiles/rebuild_cache.dir
