@@ -2,7 +2,10 @@
 #include <iostream>
 
 int main(int argc, char *argv[]){
-    TaskAllocation* taskAllocation = new TaskAllocation();
+    TaskAllocation taskAllocation;
+    taskAllocation.convertPackageOrders();
+    std::cout << taskAllocation.myText_ << std::endl;
+    // std::cout << "test" << std::endl;
 
     return 0;
 }

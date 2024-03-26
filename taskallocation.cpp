@@ -1,23 +1,27 @@
 #include "taskallocation.h"
-using namespace std;
 #include <iostream>
 #include <fstream>
+#include <string>
+using namespace std;
 
 TaskAllocation::TaskAllocation() {
-    bool converted = convertPackageOrders();
 }
 
 bool TaskAllocation::convertPackageOrders(void){
     bool converted = true;
     // read in .csv file
+    // std::cout << "myText" << std::endl;
 
-    ifstream package_orders_file("package_orders.csv");
+    ifstream package_orders_file("package_orders.txt");
     string myText;
 
-    while (getline (package_orders_file, myText)) {
-    // Output the text from the file
-    std::cout << myText << std::endl;
-    }
+    getline (package_orders_file, myText);
+    // Output the text from the file    
+
+    myText_ = myText;
+
+    // Close the file
+    package_orders_file.close(); 
 
     return converted;
     
