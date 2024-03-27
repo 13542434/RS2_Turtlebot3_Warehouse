@@ -1,0 +1,15 @@
+
+Launch gazebo
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_gazebo turtlebot3_house.launch
+
+Run Navigation node
+ export TURTLEBOT3_MODEL=waffle_pi
+ roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/rs2_13945365_ws/staticMap/maphouse.yaml
+
+Telo-op
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+
+tf tree
+rosrun tf view_frames
