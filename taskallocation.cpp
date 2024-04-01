@@ -78,6 +78,9 @@ std::vector<Order> TaskAllocation::getOrders(void){
 
 bool TaskAllocation::nearestNeighbour(void){
     bool executed = true;
+    // find available turtlebots (available slots)
+    // find packages within vicinity of turtlebot's neighbourhood
+    // assign the packages to the turtlebot that are in the neighbourhood AND nearest to turtlebot
     return executed;
 }
 
