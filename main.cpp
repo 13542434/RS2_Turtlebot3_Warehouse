@@ -1,11 +1,16 @@
 #include "taskallocation.h"
 #include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
 
 int main(int argc, char *argv[]){
     TaskAllocation taskAllocation;
-    taskAllocation.convertPackageOrders();
-    std::cout << taskAllocation.myText_ << std::endl;
-    // std::cout << "test" << std::endl;
+    for (auto order:taskAllocation.getOrders())
+    {
+        std::cout << order.getPackageNo() << ", " << order.getPickUpLoc() << ", " << order.getDropOffLoc() << std::endl;
+    }   
+    
 
     return 0;
 }

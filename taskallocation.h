@@ -20,13 +20,15 @@ public:
      */
     void assignedGoals(void);
     /**
-     * Takes package orders from warehouse system (.csv) and converts them to vectors [[pkg#, pickUpLoc, dropOffLoc], [pkg#, pickUpLoc, dropOffLoc]]
+     * Takes package orders from warehouse system (.csv) and converts them to vectors of Orders [order1, order2], where an order is [pkg#, pickUpLoc, dropOffLoc]
      * Runs once in constructor to set up
      * @return true if packages have all been read correctly
     */
     bool convertPackageOrders(void);
-
-    string myText_;
+    /**
+     * @return the orders converted from the csv file
+    */
+    std::vector<Order> getOrders(void);
     
 protected:
 
