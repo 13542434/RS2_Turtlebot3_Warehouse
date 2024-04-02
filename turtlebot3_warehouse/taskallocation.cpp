@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 TaskAllocation::TaskAllocation() {
@@ -78,8 +80,66 @@ std::vector<Order> TaskAllocation::getOrders(void){
 
 bool TaskAllocation::nearestNeighbour(void){
     bool executed = true;
-    // find available turtlebots (available slots)
-    // find packages within vicinity of turtlebot's neighbourhood
+    vector<unsigned int> turtlebotNeighbourhood;
+    vector<unsigned int> neighbouringPackages;
+    unsigned int packageNo;
+    double distance;
+    vector<double> distances;
+    double closestDistance;
+    MultiRobot multiRobot; //MultiRobot Path Planning class
+
+
+    // find available turtlebots
+    for (auto turtlebot : turtlebots_)
+    {
+        if (!turtlebot.getHasPackage())
+        {
+            // find packages within vicinity of turtlebot's neighbourhood
+            turtlebotNeighbourhood = turtlebot.getNeighbourhood();
+            turtlebotNeighbourhood.push_back(9999);//for find algorithm to work
+            for (auto order : orders_)
+            {
+                packageNo = order.getPackageNo();
+
+                auto it = std::find(turtlebotNeighbourhood.begin(), turtlebotNeighbourhood.end(), packageNo);
+
+                if (it != turtlebotNeighbourhood.end()) 
+                {
+                    //packages to assign to turtlebot
+                    neighbouringPackages.push_back(packageNo);
+                }
+            }
+            //find the closest neighbouringPackages to turtlebot
+            
+            for (auto assignedPackage : neighbouringPackages)
+            {
+                distance = multiRobot.getDistanceToPackage(turtlebot, assignedPackage);
+                distances.push_back(distance);
+            }
+            distances.push_back(99999);//for find algorithm to work
+
+            for (int i = 0; i < distances.size()-1; i++)
+            {
+                if(distances.at(i+1)<distances.at(i)){
+                    closestDistance = distances.at(i+1);
+                }
+            }
+
+            //get the index of closestDistance and assign correlated package number to turtlebot
+            auto itDistance = std::find(distances.begin(), distances.end(), closestDistance);
+            if (itDistance != distances.end()) 
+            {
+                //closest assignable package
+                int index = itDistance - distances.end();
+                assignPackageToTurtlebot(neighbouringPackages.at(index));
+            }      
+            
+            
+        }
+        
+    }
+    
+    
     // assign the packages to the turtlebot that are in the neighbourhood AND nearest to turtlebot
     return executed;
 }

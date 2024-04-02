@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "order.h"
+#include "turtlebot3.h"
 #include <string>
 using namespace std;
 
@@ -41,6 +42,8 @@ private:
     bool nearestNeighbour(void);
 
     std::vector<Order> orders_;
+
+    std::vector<TurtleBot3> turtlebots_;
 
 };
 
