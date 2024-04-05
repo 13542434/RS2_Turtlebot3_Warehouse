@@ -1,31 +1,31 @@
-# The minimum version of CMake Required 
-cmake_minimum_required (VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.0.2)
+project(turtlebot3_warehouse)
 
-# Change project name
-project (RS2_turtlebot3_warehouse)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+# Compile as C++11, supported in ROS Kinetic and newer
+add_compile_options(-std=c++11)
 
-set(BUILD_TESTS ON)
-SET(MYDEBUG CACHE STRING "Additional definition" ON)
+# Find catkin macros and libraries
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  std_msgs
+  nav_msgs # Assuming you need nav_msgs for your application
+)
 
-# find_package(pipes REQUIRED)
+# Catkin specific configuration
+catkin_package(
+  # INCLUDE_DIRS include # Uncomment if you have header files in an 'include' directory
+  CATKIN_DEPENDS roscpp std_msgs nav_msgs
+  # DEPENDS system_lib # Uncomment and list dependencies that are not catkin packages
+)
 
-# CMake will create your library, add the cpp files needed
-add_library(taskallocation taskallocation.cpp order.cpp)
-target_link_libraries(taskallocation)
+# Specify additional locations of header files
+include_directories(
+  include # Uncomment if you have an 'include' directory for headers
+  ${catkin_INCLUDE_DIRS}
+)
 
-# CMake will create the cell library that you will need 
-# add_library(mission mission.cpp)
+# add_executable(multi_bot src/main.cpp src/MultiBot.cpp)
+# target_link_libraries(multi_bot ${catkin_LIBRARIES})
 
-# CMake will create executable add the cpp files needed
-add_executable(main main.cpp)
-
-# Cmake will link against the libraries in final step
-target_link_libraries(main taskallocation)
-
-# add_dependencies(a1 pipes::pfmsconnector)
-link_directories(/usr/local/lib)
-
-# if(BUILD_TESTS)
-#    add_subdirectory(test)
-# endif()
+add_executable(${PROJECT_NAME}_node src/main.cpp src/SetGoals.cpp src/MultiBot.cpp src/TurtleBot3.cpp)
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})

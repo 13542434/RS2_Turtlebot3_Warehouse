@@ -1,0 +1,16 @@
+Start,End,Distance
+Robot0,Package1,19.108
+Robot0,Package2,15.617
+Robot0,Package3,15.1911
+Robot1,Package1,9.84429
+Robot1,Package2,1.91108
+Robot1,Package3,11.1184
+Robot2,Package1,0.567182
+Robot2,Package2,8.35136
+Robot2,Package3,13.2493
+Package1,Package2,8.00895
+Package1,Package3,12.9176
+Package2,Package1,7.98866
+Package2,Package3,9.42828
+Package3,Package1,12.94
+Package3,Package2,9.46385

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libtaskallocation.a CMakeFiles/taskallocation.dir/taskallocation.cpp.o CMakeFiles/taskallocation.dir/order.cpp.o
-/usr/bin/ranlib libtaskallocation.a
