@@ -18,6 +18,12 @@ Update in void loadPackages, calculateFuturePlans, calculateLivePlans
 	rosrun turtlebot3_warehouse turtlebot3_warehouse_node
 
 
+/
+/
+/
+/
+/ 
+///////////////
 
 General Notes:
 
@@ -31,28 +37,14 @@ SetGoals is currently not used, but the implementation works. This will be usefu
 I could not get namspaces workign with TurtleBot3.h etc. so that you can instantiate the class multiple times in MultiBot.h.
 At the moment, if you look in the class you will see that i have just got multiple data for each turtlebot, not multiple classes.
 This will also need to be done for indicating if a turtlebot has the package or not, but I think this approach should work for now?
+/
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/
+/
+/
+//////////////////////
 
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 10. cd ~/catkin_ws/src/multi_turtlebot3/scripts$
