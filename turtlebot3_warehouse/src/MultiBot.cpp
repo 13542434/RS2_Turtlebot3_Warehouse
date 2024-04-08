@@ -26,7 +26,7 @@ double MultiBot::calculatePlanDistance(const nav_msgs::Path& path) {
 
 void MultiBot::calculateLivePlans() {
     //open the CSV file
-    std::ofstream file("/home/nk/catkin_ws/src/turtlebot3_warehouse/src/plans.csv");
+    std::ofstream file("../plans.csv");
 
     //check if you cannot open it
     if (!file.is_open()) {
@@ -95,7 +95,7 @@ void MultiBot::calculateLivePlans() {
 
 void MultiBot::calculateFuturePlans() {
     // Open the CSV file for writing future plan distances
-    std::ofstream file("/home/nk/catkin_ws/src/turtlebot3_warehouse/src/plans.csv", std::ios::app);
+    std::ofstream file("../plans.csv", std::ios::app);
 
     // Check if the file is successfully opened
     if (!file.is_open()) {
@@ -161,7 +161,7 @@ void MultiBot::loadPackages(){
     // Seems the GCC compiler this version uses doesn't support std::filesystem :(
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    std::ifstream file("/home/nk/catkin_ws/src/turtlebot3_warehouse/src/package_orders.csv");
+    std::ifstream file("../package_orders.csv");
     std::string line;
     
     //Check if file is open
