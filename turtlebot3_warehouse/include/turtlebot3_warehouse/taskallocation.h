@@ -43,7 +43,7 @@ private:
 
     std::vector<Order> orders_;
 
-    std::vector<TurtleBot3> turtlebots_;
+    std::vector<TurtleBot3> turtlebots_; //!< The private variable for the group of turtlebots in use
 
 };
 
