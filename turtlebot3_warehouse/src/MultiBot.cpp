@@ -1,10 +1,12 @@
 #include "turtlebot3_warehouse/MultiBot.h"
+#include "turtlebot3_warehouse/TurtleBot3.h"
 #include <cmath>
+#include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/GetPlan.h>
 #include <fstream>
 
-MultiBot::MultiBot(ros::NodeHandle* nh) : nh_(*nh), turtleBot3_(*nh) {
+MultiBot::MultiBot(ros::NodeHandle* nh, TurtleBot3Interface tb3Interface) : nh_(*nh), turtleBot3Interface_(tb3Interface) {
     ROS_INFO("MultiBot initialised with TurtleBot3");
 }
 
@@ -25,6 +27,7 @@ double MultiBot::calculatePlanDistance(const nav_msgs::Path& path) {
 }
 
 void MultiBot::calculateLivePlans() {
+    std::vector<TurtleBot3*> turtlebots = turtleBot3Interface_.getTurtleBotsList();
     //open the CSV file
     std::ofstream file("../plans.csv");
 
@@ -38,16 +41,16 @@ void MultiBot::calculateLivePlans() {
 
     for (int tb = 0; tb < 3; ++tb) { //loop through three turtlebots atm
 
-        if (!turtleBot3_.hasPoseBeenUpdated(tb)) { //check that we have received AMCL_pose data (from the localisation)
+        if (!turtlebots.at(tb)->hasPoseBeenUpdated()) { //check that we have received AMCL_pose data (from the localisation)
             ROS_WARN("Pose for TurtleBot %d not updated yet. Waiting...", tb);
-            while (!turtleBot3_.hasPoseBeenUpdated(tb)) {
+            while (!turtlebots.at(tb)->hasPoseBeenUpdated()) {
                 ros::spinOnce();
                 ros::Duration(0.1).sleep();
             }
         }
         std::string service_name = "/tb3_" + std::to_string(tb) + "/move_base/make_plan"; 
         ros::ServiceClient client = nh_.serviceClient<nav_msgs::GetPlan>(service_name);
-        geometry_msgs::Pose start_pose = turtleBot3_.getCurrentPose(tb); //get the current position of the turtlebot from amcl
+        geometry_msgs::Pose start_pose = turtlebots.at(tb)->getCurrentPose(); //get the current position of the turtlebot from amcl
 
         std::string startLocation = "Robot" + std::to_string(tb);
         ROS_INFO("[Robot %d] Generating plans. Start Pose: x=%.2f, y=%.2f, z=%.2f",

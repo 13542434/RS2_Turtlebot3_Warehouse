@@ -1,11 +1,13 @@
 #include "ros/ros.h"
 #include "turtlebot3_warehouse/SetGoals.h"
 #include "turtlebot3_warehouse/MultiBot.h"
-#include "turtlebot3_warehouse/TurtleBot3.h"
+#include "turtlebot3_warehouse/TurtleBot3Interface.h"
 
 int main(int argc, char** argv) {
     ros::init(argc, argv, "multi_bot");
     ros::NodeHandle nh;
+
+    TurtleBot3Interface tb3Interface(&nh);
 
     SetGoals setGoals(&nh);
 
@@ -15,7 +17,7 @@ int main(int argc, char** argv) {
     // setGoals.publishGoals();
 
     // Initialise MultiBot or any other components
-    MultiBot multiBot(&nh);
+    MultiBot multiBot(&nh, tb3Interface);
   
     // ros::Duration(1.0).sleep();
     multiBot.loadPackages();
