@@ -1,4 +1,6 @@
 #include "turtlebot3_warehouse/taskallocation.h"
+#include "turtlebot3_warehouse/turtlebot3Interface.h"
+#include "turtlebot3_warehouse/turtlebot3.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -6,7 +8,10 @@
 #include <algorithm>
 using namespace std;
 
-TaskAllocation::TaskAllocation() {
+TaskAllocation::TaskAllocation(TurtleBot3Interface tb3Interface) :
+    turtleBot3Interface_(tb3Interface)
+{
+    turtlebots_ = turtleBot3Interface_.getTurtleBotsList();
     convertPackageOrders();
 }
 
@@ -81,6 +86,7 @@ std::vector<Order> TaskAllocation::getOrders(void){
 // make TSP graph <-- get the plans.csv and turn into a graph
 // solve TSP using Vehicle Routing Problem (VRP)
 
+/*
 bool TaskAllocation::nearestNeighbour(void){
     bool executed = true;
     vector<unsigned int> turtlebotNeighbourhood;
@@ -146,6 +152,8 @@ bool TaskAllocation::nearestNeighbour(void){
     // assign the packages to the turtlebot that are in the neighbourhood AND nearest to turtlebot
     return executed;
 }
+*/
+
 
 // packagePoseAssociation??? (not sure depends on how MultiRobot works)
 

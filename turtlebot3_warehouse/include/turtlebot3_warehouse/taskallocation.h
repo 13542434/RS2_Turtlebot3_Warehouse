@@ -3,7 +3,8 @@
 
 #include <vector>
 #include "order.h"
-#include "turtlebot3.h"
+#include "turtlebot3_warehouse/turtlebot3Interface.h"
+#include "turtlebot3_warehouse/turtlebot3.h"
 #include <string>
 using namespace std;
 
@@ -13,7 +14,7 @@ class TaskAllocation
 {
 public:
     // Default Constructors
-    TaskAllocation();
+    TaskAllocation(TurtleBot3Interface tb3Interface);
 
     /**
      * MultiRobot gets their goals from here [[TB1, startLoc, endLoc], [TB2, startLoc, endLoc]]
@@ -43,8 +44,8 @@ private:
 
     std::vector<Order> orders_;
 
-    std::vector<TurtleBot3> turtlebots_; //!< The private variable for the group of turtlebots in use
-
+    TurtleBot3Interface turtleBot3Interface_;  // Instance of TurtleBot3Interface
+    std::vector<TurtleBot3*> turtlebots_;
 };
 
 #endif // TASKALLOCATION_H
