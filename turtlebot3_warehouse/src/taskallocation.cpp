@@ -1,6 +1,6 @@
 #include "turtlebot3_warehouse/taskallocation.h"
-#include "turtlebot3_warehouse/turtlebot3Interface.h"
-#include "turtlebot3_warehouse/turtlebot3.h"
+#include "turtlebot3_warehouse/order.h"
+#include "turtlebot3_warehouse/TurtleBot3Interface.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -62,7 +62,8 @@ bool TaskAllocation::convertPackageOrders(void){
 
             if (packageNum!=0 && pickUpLoc!=0 && dropOffLoc!=0)
             {
-                orders.push_back(Order(packageNum,pickUpLoc,dropOffLoc));
+                orders.push_back(Order(packageNum,pickUpLoc,dropOffLoc)); //create an order
+                //reset the numbers
                 packageNum = 0;
                 pickUpLoc = 0;
                 dropOffLoc = 0;
@@ -84,7 +85,11 @@ std::vector<Order> TaskAllocation::getOrders(void){
 }
 
 // make TSP graph <-- get the plans.csv and turn into a graph
+
 // solve TSP using Vehicle Routing Problem (VRP)
+//LKH-3 CVRP (Capacitated Vehicle Routing Problem)
+// Get number of packages at each node from orders_ and transfer in csv
+// execute the task_allocation.py (the paths in there need to change to work in git)
 
 /*
 bool TaskAllocation::nearestNeighbour(void){

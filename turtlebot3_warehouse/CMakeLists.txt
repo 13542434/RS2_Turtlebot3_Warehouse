@@ -27,5 +27,5 @@ include_directories(
 # add_executable(multi_bot src/main.cpp src/MultiBot.cpp)
 # target_link_libraries(multi_bot ${catkin_LIBRARIES})
 
-add_executable(${PROJECT_NAME}_node src/main.cpp src/SetGoals.cpp src/MultiBot.cpp src/TurtleBot3.cpp src/TurtleBot3Interface.cpp)
+add_executable(${PROJECT_NAME}_node src/main.cpp src/SetGoals.cpp src/MultiBot.cpp src/TurtleBot3.cpp src/TurtleBot3Interface.cpp src/taskallocation.cpp src/order.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})

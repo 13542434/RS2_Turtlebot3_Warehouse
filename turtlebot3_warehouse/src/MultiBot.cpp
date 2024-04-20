@@ -28,6 +28,7 @@ double MultiBot::calculatePlanDistance(const nav_msgs::Path& path) {
 
 void MultiBot::calculateLivePlans() {
     std::vector<TurtleBot3*> turtlebots = turtleBot3Interface_.getTurtleBotsList();
+    int num_tb = turtleBot3Interface_.getNumTurtlebots();
     //open the CSV file
     std::ofstream file("../plans.csv");
 
@@ -39,7 +40,7 @@ void MultiBot::calculateLivePlans() {
     //top row of the csv file for the columns
     file << "Start,End,Distance\n";
 
-    for (int tb = 0; tb < 3; ++tb) { //loop through three turtlebots atm
+    for (int tb = 0; tb < num_tb; ++tb) { //loop through three turtlebots atm
 
         if (!turtlebots.at(tb)->hasPoseBeenUpdated()) { //check that we have received AMCL_pose data (from the localisation)
             ROS_WARN("Pose for TurtleBot %d not updated yet. Waiting...", tb);

@@ -2,9 +2,8 @@
 #define TASKALLOCATION_H
 
 #include <vector>
-#include "order.h"
-#include "turtlebot3_warehouse/turtlebot3Interface.h"
-#include "turtlebot3_warehouse/turtlebot3.h"
+#include "turtlebot3_warehouse/order.h"
+#include "turtlebot3_warehouse/TurtleBot3Interface.h"
 #include <string>
 using namespace std;
 
@@ -20,7 +19,7 @@ public:
      * MultiRobot gets their goals from here [[TB1, startLoc, endLoc], [TB2, startLoc, endLoc]]
      *  
      */
-    void assignedGoals(void);
+    // void assignedGoals(void);
     /**
      * Takes package orders from warehouse system (.csv) and converts them to vectors of Orders [order1, order2], where an order is [pkg#, pickUpLoc, dropOffLoc]
      * Runs once in constructor to set up
@@ -40,7 +39,7 @@ private:
     /**
      * Assigns package orders to currently available turtlebots via nearest neighbour greedy allocation
     */
-    bool nearestNeighbour(void);
+    // bool nearestNeighbour(void);
 
     std::vector<Order> orders_;
 

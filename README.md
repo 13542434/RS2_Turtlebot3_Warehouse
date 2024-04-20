@@ -9,11 +9,6 @@ Add these files into ~/catkin_ws/src
 9. source devel/setup.bash
 10. roslaunch turtlebot3_navigation multi_nav_bringup.launch
 
-11. IMPORTANT: GO INTO THE CODE AND UPDATE THE PATHS IN MultiBot.cpp!!!
-e.g std::ofstream file("/home/nk/catkin_ws/src/turtlebot3_warehouse/src/plans.csv");
-Update in void loadPackages, calculateFuturePlans, calculateLivePlans
-You may also need to update cmake lists directories
-
 13. You can run the code in VSCODE (open folder ~/catkin_ws/src/turtlebot3_warehouse/src) 
 		OR
 	rosrun turtlebot3_warehouse turtlebot3_warehouse_node
