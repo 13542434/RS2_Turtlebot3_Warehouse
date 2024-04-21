@@ -16,67 +16,99 @@ TaskAllocation::TaskAllocation(TurtleBot3Interface tb3Interface) :
 }
 
 bool TaskAllocation::convertPackageOrders(void){
-    bool converted = true;
-    vector<string> linesOfText;
-    vector<Order> orders;
-
-    ifstream package_orders_file("../package_orders.csv");
-    string myText;
-    char myChar;
+    bool converted;
+    std::vector<Order> orders;
     unsigned int orderState = 0;
     unsigned int packageNum = 0;
+    std::string packageNum_str;
     unsigned int pickUpLoc = 0;
+    std::string pickUpLoc_str;
     unsigned int dropOffLoc = 0;
+    std::string dropOffLoc_str;
+    std::ifstream package_orders_file("../package_orders.csv");
+    std::string myText;
+    int counter = -1;
 
     if (package_orders_file.is_open())
     {
-        while (package_orders_file)
-        {
-            myChar = package_orders_file.get();
-            if (myChar != ' ' && myChar != ',' && myChar != ';' && myChar != '\n')
+        std::cout << "package_orders.csv reads:" << std::endl;
+        while (package_orders_file.good()) { 
+            getline(package_orders_file, myText);
+            std::cout << myText << std::endl;
+            orderState = 0;
+            
+            if (counter >= 0) // skip first line (packageNo,pickUpLoc,dropOffLoc)
             {
-                // cout<< myChar <<endl;
-                // cout<< orderState <<endl;
-                switch (orderState)
+                for (auto myChar:myText)
                 {
-                case 0:
-                    packageNum = int(myChar) - 48;
-                    // cout<< packageNum <<endl;                    
-                    orderState++;
-                    break;
-                case 1:
-                    pickUpLoc = int(myChar) - 48;
-                    // cout<< pickUpLoc <<endl;  
-                    orderState++;
-                    break;
-                case 2:
-                    dropOffLoc = int(myChar) - 48;
-                    // cout<< dropOffLoc <<endl;  
-                    orderState = 0;
-                    break;
-                default:
-                    orderState = 0;
-                    break;
-                }
-            }
+                    switch (orderState)
+                    {
+                    case 0:
+                        // all characters until next comma are the packageNum
+                        if (myChar == ',')
+                        {
+                            packageNum = stoi(packageNum_str);
+                            orderState++;
+                            packageNum_str = "";
+                        }
+                        else
+                        {
+                            packageNum_str += myChar;
+                        }                        
+                        break;
+                    case 1:
+                        // all characters until next comma are the pickUpLoc
+                        if (myChar == ',')
+                        {
+                            pickUpLoc = stoi(pickUpLoc_str);
+                            orderState++;
+                            pickUpLoc_str = "";
+                        }
+                        else
+                        {
+                            pickUpLoc_str += myChar;
+                        }
+                        break;
+                    case 2:
+                        // all characters until next comma are the dropOffLoc
+                        if (myChar == ',')
+                        {
+                            dropOffLoc = stoi(dropOffLoc_str);
+                            orderState = 0;
+                            dropOffLoc_str = "";
+                        }
+                        else
+                        {
+                            dropOffLoc_str += myChar;
+                        }
+                        break;
+                    default:
+                        break;                        
+                    }
 
-            if (packageNum!=0 && pickUpLoc!=0 && dropOffLoc!=0)
-            {
-                orders.push_back(Order(packageNum,pickUpLoc,dropOffLoc)); //create an order
-                //reset the numbers
-                packageNum = 0;
-                pickUpLoc = 0;
-                dropOffLoc = 0;
+                }            
+
+                orders.push_back(Order(packageNum, pickUpLoc, dropOffLoc));
             }
+            counter++;
             
-            
-        }
-        
+        }        
+    }
+    else
+    {
+        std::cout << "package_orders.csv could not be read" <<std::endl;
+        return converted = false;
+    }
+
+    std::cout << "Orders are:" << std::endl;
+    for (auto order:orders)
+    {
+        std::cout << "packageNo: " << order.getPackageNo() << ", pickUpLoc: " << order.getPickUpLoc() << ", dropOffLoc: " << order.getDropOffLoc() << std::endl;
     }
 
     orders_ = orders;
 
-    return converted;
+    return converted = true;
     
 }
 

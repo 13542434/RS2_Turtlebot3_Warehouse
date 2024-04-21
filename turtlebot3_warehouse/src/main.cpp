@@ -12,20 +12,14 @@ int main(int argc, char** argv) {
 
     TurtleBot3Interface tb3Interface(&nh);
 
-    // TaskAllocation taskAllocation(tb3Interface);
-
-    // std::vector<Order> orders = taskAllocation.getOrders();
-    // for (int i = 0; i < orders.size(); i++)
-    // {
-    //     std::cout << "packageNo: " << orders.at(i).getPackageNo() << ", pickUpLoc: " << orders.at(i).getPickUpLoc() << ", dropOffLoc: " << orders.at(i).getDropOffLoc() << std::endl;
-    // }
+    TaskAllocation taskAllocation(tb3Interface);
 
     SetGoals setGoals(&nh);
 
-    // // Optional: wait a bit for subscribers to connect
-    // ros::Duration(1.0).sleep(); // Sleep for a second, adjust as needed
+    // Optional: wait a bit for subscribers to connect
+    ros::Duration(1.0).sleep(); // Sleep for a second, adjust as needed
 
-    // setGoals.publishGoals();
+    setGoals.publishGoals();
 
     // Initialise MultiBot or any other components
     MultiBot multiBot(&nh, tb3Interface);
