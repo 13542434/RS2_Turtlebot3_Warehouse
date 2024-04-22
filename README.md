@@ -1,5 +1,6 @@
 Add these files into ~/catkin_ws/src
-1. Compile your workspace
+1. Edit main.cpp variable include_file_path to use your own file path to the include folder
+2. Compile your workspace
     NOTE: if using VMware, you may need to run (export SVGA_VGPU10=0 in addition to fix 3D acceleration/GPU passthrough)
 3. export TURTLEBOT3_MODEL=waffle_pi
 4. roslaunch turtlebot3_gazebo multi_turtlebot3.launch
