@@ -4,8 +4,8 @@
 #include <string>
 using namespace std;
 
-TurtleBot3Interface::TurtleBot3Interface(ros::NodeHandle* nh) :
-    nh_(*nh) 
+TurtleBot3Interface::TurtleBot3Interface(ros::NodeHandle* nh, std::string include_file_path) :
+    nh_(*nh), include_file_path_(include_file_path) 
 {
     // create the number of turtlebots given in config.txt
     num_turtlebots_ = configSearch("NUM_TURTLEBOTS: ");
@@ -19,6 +19,7 @@ TurtleBot3Interface::TurtleBot3Interface(ros::NodeHandle* nh) :
         topic_num = i;
         topic_string = "/tb3_" + to_string(topic_num) + "/amcl_pose";
         turtlebots_.push_back(new TurtleBot3(&nh_, topic_string));
+        std::cout<<"Created Turtlebot "<<i<<std::endl;
     }
     
     
@@ -35,34 +36,41 @@ int TurtleBot3Interface::getNumTurtlebots(void)
 }
 
 int TurtleBot3Interface::configSearch(std::string config_variable) {
-    std::ifstream config_file("../config.txt");
+    std::ifstream config_file(config_file_path_);
     char myChar;
     std::string myString;
+    std::string myText;
     std::string stringToInt;
+    bool config_variable_flag = false;
     if (config_file.is_open())
     {
-        while (config_file)
+        std::cout<<"config file opened"<<std::endl;
+        while (config_file.good())
         {
-            myChar = config_file.get();
-            if (myChar != '\n')
+            std::cout<<"reading config file..."<<std::endl;
+            getline(config_file,myText);
+            for (auto myChar:myText)
             {
-                myString += myChar;
-            }
-            else
-            {
-                myString.clear();
-            }
-            
-            if (myString == config_variable) // read config file number after "NUM_TURTLEBOTS: "
-            {
-                while (myChar != '\n')
+                if (!config_variable_flag)
                 {
-                    myChar = config_file.get();
+                    myString += myChar;
+                
+                    if (myString == config_variable) // read config file number after "NUM_TURTLEBOTS: "
+                    {
+                        config_variable_flag = true;                    
+                    }
+                }
+                else
+                {
                     stringToInt += myChar;
                 }
-                return stoi(stringToInt);
             }
         }
     }
+    else
+    {
+        std::cout<<"config.txt could not be opened"<<std::endl;
+    }
+    return stoi(stringToInt);
 }
 

@@ -1,12 +1,15 @@
 #include "turtlebot3_warehouse/MultiBot.h"
 #include "turtlebot3_warehouse/TurtleBot3.h"
+#include "turtlebot3_warehouse/taskallocation.h"
 #include <cmath>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/GetPlan.h>
 #include <fstream>
 
-MultiBot::MultiBot(ros::NodeHandle* nh, TurtleBot3Interface tb3Interface) : nh_(*nh), turtleBot3Interface_(tb3Interface) {
+MultiBot::MultiBot(ros::NodeHandle* nh, TurtleBot3Interface tb3Interface, TaskAllocation taskAllocation, std::string include_file_path) : 
+    nh_(*nh), turtleBot3Interface_(tb3Interface), taskAllocation_(taskAllocation), include_file_path_(include_file_path) 
+{
     ROS_INFO("MultiBot initialised with TurtleBot3");
 }
 
@@ -30,7 +33,7 @@ void MultiBot::calculateLivePlans() {
     std::vector<TurtleBot3*> turtlebots = turtleBot3Interface_.getTurtleBotsList();
     int num_tb = turtleBot3Interface_.getNumTurtlebots();
     //open the CSV file
-    std::ofstream file("../plans.csv");
+    std::ofstream file(plans_file_path_);
 
     //check if you cannot open it
     if (!file.is_open()) {
@@ -99,7 +102,7 @@ void MultiBot::calculateLivePlans() {
 
 void MultiBot::calculateFuturePlans() {
     // Open the CSV file for writing future plan distances
-    std::ofstream file("../plans.csv", std::ios::app);
+    std::ofstream file(plans_file_path_, std::ios::app);
 
     // Check if the file is successfully opened
     if (!file.is_open()) {
@@ -165,7 +168,9 @@ void MultiBot::loadPackages(){
     // Seems the GCC compiler this version uses doesn't support std::filesystem :(
 
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    std::ifstream file("../package_orders.csv");
+    std::vector<Order> orders = taskAllocation_.getOrders(); //use this vector to fill package coordinates information
+
+    std::ifstream file(package_orders_file_path_);
     std::string line;
     
     //Check if file is open

@@ -13,7 +13,7 @@ class TaskAllocation
 {
 public:
     // Default Constructors
-    TaskAllocation(TurtleBot3Interface tb3Interface);
+    TaskAllocation(TurtleBot3Interface tb3Interface, std::string include_file_path);
 
     /**
      * MultiRobot gets their goals from here [[TB1, startLoc, endLoc], [TB2, startLoc, endLoc]]
@@ -45,6 +45,9 @@ private:
 
     TurtleBot3Interface turtleBot3Interface_;  // Instance of TurtleBot3Interface
     std::vector<TurtleBot3*> turtlebots_;
+    std::string include_file_path_;
+    std::string package_orders_file_path_ = include_file_path_ +"/turtlebot3_warehouse/package_orders.csv";
+    
 };
 
 #endif // TASKALLOCATION_H

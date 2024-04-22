@@ -64,6 +64,9 @@
         "string": "cpp",
         "string_view": "cpp",
         "codecvt": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "any": "cpp"
     }
 }
