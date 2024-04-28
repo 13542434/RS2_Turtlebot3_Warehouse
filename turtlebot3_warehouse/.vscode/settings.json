@@ -68,6 +68,7 @@
         "condition_variable": "cpp",
         "mutex": "cpp",
         "any": "cpp"
+<<<<<<< HEAD
     },
     "python.autoComplete.extraPaths": [
         "/home/nk/catkin_ws/devel/lib/python2.7/dist-packages",
@@ -77,4 +78,7 @@
         "/home/nk/catkin_ws/devel/lib/python2.7/dist-packages",
         "/opt/ros/melodic/lib/python2.7/dist-packages"
     ]
+=======
+    }
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
 }

@@ -1,4 +1,5 @@
 Start,End,Distance
+<<<<<<< HEAD
 Depot,Package1,0.0464712
 Depot,Package2,0.0464712
 Depot,Package4,0.0464712
@@ -9,3 +10,5 @@ Depot,Package1,0.0464712
 Depot,Package2,0.0464712
 Depot,Package4,0.0464712
 Package1,Package2,0.0464712
+=======
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363

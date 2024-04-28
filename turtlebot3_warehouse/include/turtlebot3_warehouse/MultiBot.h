@@ -6,7 +6,10 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "turtlebot3_warehouse/TurtleBot3Interface.h"
 #include "turtlebot3_warehouse/taskallocation.h"
+<<<<<<< HEAD
 #include "turtlebot3_warehouse/order.h"
+=======
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
 
 #include <fstream>
 #include <sstream>
@@ -35,9 +38,12 @@ private:
     std::string include_file_path_;
     std::string package_orders_file_path_ = include_file_path_ +"/turtlebot3_warehouse/package_orders.csv";
     std::string plans_file_path_ = include_file_path_ + "/turtlebot3_warehouse/plans.csv";
+<<<<<<< HEAD
     // std::string package_orders_file_path_ = "/home/nk/catkin_ws/src/turtlebot3_warehouse/include/turtlebot3_warehouse/package_orders.csv";
     // std::string plans_file_path_ = + "/home/nk/catkin_ws/src/turtlebot3_warehouse/include/turtlebot3_warehouse/plans.csv";
 
+=======
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
 };
 
 #endif  // MULTIBOT_H

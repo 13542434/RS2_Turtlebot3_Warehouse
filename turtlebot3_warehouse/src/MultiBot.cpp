@@ -33,7 +33,11 @@ double MultiBot::calculatePlanDistance(const nav_msgs::Path& path) {
 void MultiBot::calculateDepotPlans() {
     std::vector<TurtleBot3*> turtlebots = turtleBot3Interface_.getTurtleBotsList();
     int num_tb = turtleBot3Interface_.getNumTurtlebots();
+<<<<<<< HEAD
     // Open the CSV file
+=======
+    //open the CSV file
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
     std::ofstream file(plans_file_path_);
 
     // Check if you cannot open it
@@ -147,6 +151,7 @@ void MultiBot::calculateFuturePlans() {
     ROS_INFO("future plan calculations completed and saved.");
 }
 
+<<<<<<< HEAD
 void MultiBot::loadPackages() {
     // Retrieve the list of orders from taskAllocation
     std::vector<Order> orders = taskAllocation_.getOrders();
@@ -170,6 +175,29 @@ void MultiBot::loadPackages() {
         // Add to packageCoordinates
         packageCoordinates.emplace_back(std::make_tuple(pickUpX, pickUpY, pickUpZ));
         packageCoordinates.emplace_back(std::make_tuple(dropOffX, dropOffY, dropOffZ));
+=======
+
+
+void MultiBot::loadPackages(){
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+    //here, take in a csv file that has x number of coordinates of packages on the map. 
+    // Unforunately, i think you need to update this manually at this time, or write a prompt for console to enter the correct path.
+    // Seems the GCC compiler this version uses doesn't support std::filesystem :(
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    std::vector<Order> orders = taskAllocation_.getOrders(); //use this vector to fill package coordinates information
+
+    std::ifstream file(package_orders_file_path_);
+    std::string line;
+    
+    //Check if file is open
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file" << std::endl;
+        return;
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
     }
     ROS_INFO("loaded package coordinates in Multibot.cpp");
 }

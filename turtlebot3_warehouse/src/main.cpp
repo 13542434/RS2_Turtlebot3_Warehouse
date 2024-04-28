@@ -8,7 +8,10 @@
 
 int main(int argc, char** argv) {
     std::string include_file_path = "/home/charlize/catkin_ws/src/RS2_Turtlebot3_Warehouse/turtlebot3_warehouse/include"; // Change this to your own directory path
+<<<<<<< HEAD
     // std::string include_file_path = "/home/nk/catkin_ws/src/turtlebot3_warehouse/include";
+=======
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
     ros::init(argc, argv, "multi_bot");
     ros::NodeHandle nh;
 

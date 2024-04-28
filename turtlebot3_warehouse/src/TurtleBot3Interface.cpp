@@ -37,6 +37,7 @@ int TurtleBot3Interface::getNumTurtlebots(void)
     return num_turtlebots_;
 }
 
+<<<<<<< HEAD
 int TurtleBot3Interface::configSearch(const std::string& config_variable) {
     std::ifstream config_file(include_file_path_ + "/config.txt");
     std::string line;
@@ -56,6 +57,36 @@ int TurtleBot3Interface::configSearch(const std::string& config_variable) {
                 } catch (const std::invalid_argument& e) {
                     std::cerr << "Invalid number format in config file: " << e.what() << std::endl;
                     return -1; // or other error code
+=======
+int TurtleBot3Interface::configSearch(std::string config_variable) {
+    std::ifstream config_file(config_file_path_);
+    char myChar;
+    std::string myString;
+    std::string myText;
+    std::string stringToInt;
+    bool config_variable_flag = false;
+    if (config_file.is_open())
+    {
+        std::cout<<"config file opened"<<std::endl;
+        while (config_file.good())
+        {
+            std::cout<<"reading config file..."<<std::endl;
+            getline(config_file,myText);
+            for (auto myChar:myText)
+            {
+                if (!config_variable_flag)
+                {
+                    myString += myChar;
+                
+                    if (myString == config_variable) // read config file number after "NUM_TURTLEBOTS: "
+                    {
+                        config_variable_flag = true;                    
+                    }
+                }
+                else
+                {
+                    stringToInt += myChar;
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
                 }
             }
         }
@@ -63,6 +94,14 @@ int TurtleBot3Interface::configSearch(const std::string& config_variable) {
     } else {
         std::cerr << "Failed to open config file." << std::endl;
     }
+<<<<<<< HEAD
     return -1; // or other error code indicating failure
+=======
+    else
+    {
+        std::cout<<"config.txt could not be opened"<<std::endl;
+    }
+    return stoi(stringToInt);
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
 }
 

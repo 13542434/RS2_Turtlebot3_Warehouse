@@ -46,9 +46,14 @@ private:
     TurtleBot3Interface turtleBot3Interface_;  // Instance of TurtleBot3Interface
     std::vector<TurtleBot3*> turtlebots_;
     std::string include_file_path_;
+<<<<<<< HEAD
     // std::string package_orders_file_path_ = include_file_path_ +"/turtlebot3_warehouse/package_orders.csv";
     std::string package_orders_file_path_ = "/home/nk/catkin_ws/src/turtlebot3_warehouse/include/turtlebot3_warehouse/package_orders.csv";
 
+=======
+    std::string package_orders_file_path_ = include_file_path_ +"/turtlebot3_warehouse/package_orders.csv";
+    
+>>>>>>> 061da4f35103c439a047580a95bfb6bb9530f363
 };
 
 #endif // TASKALLOCATION_H
