@@ -16,16 +16,16 @@ public:
     void setPickUpLoc(unsigned int pickUpLoc);
     void setDropOffLoc(unsigned int dropOffLoc);    
 
-    unsigned int getPackageNo(void);
-    unsigned int getPickUpLoc(void);
-    unsigned int getDropOffLoc(void);
+    unsigned int getPackageNo(void) const;
+    double getPickUpLoc(void) const;
+    double getDropOffLoc(void) const;
     
 protected:
 
 private:
     // Functionality not used elsewhere goes here
     unsigned int packageNo_;
-    unsigned int pickUpLoc_;
-    unsigned int dropOffLoc_;
+    double pickUpLoc_;
+    double dropOffLoc_;
 };
 #endif // ORDER_H

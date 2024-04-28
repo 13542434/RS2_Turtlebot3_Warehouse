@@ -8,8 +8,8 @@
 #include <algorithm>
 using namespace std;
 
-TaskAllocation::TaskAllocation(TurtleBot3Interface tb3Interface) :
-    turtleBot3Interface_(tb3Interface)
+TaskAllocation::TaskAllocation(TurtleBot3Interface tb3Interface, std::string include_file_path) :
+    turtleBot3Interface_(tb3Interface), include_file_path_(include_file_path)
 {
     turtlebots_ = turtleBot3Interface_.getTurtleBotsList();
     convertPackageOrders();
@@ -25,7 +25,7 @@ bool TaskAllocation::convertPackageOrders(void){
     std::string pickUpLoc_str;
     unsigned int dropOffLoc = 0;
     std::string dropOffLoc_str;
-    std::ifstream package_orders_file("../package_orders.csv");
+    std::ifstream package_orders_file(package_orders_file_path_);
     std::string myText;
     int counter = -1;
 
@@ -89,6 +89,9 @@ bool TaskAllocation::convertPackageOrders(void){
                 }            
 
                 orders.push_back(Order(packageNum, pickUpLoc, dropOffLoc));
+                packageNum = 0;
+                pickUpLoc = 0;
+                dropOffLoc = 0;
             }
             counter++;
             
@@ -111,6 +114,7 @@ bool TaskAllocation::convertPackageOrders(void){
     return converted = true;
     
 }
+
 
 std::vector<Order> TaskAllocation::getOrders(void){
     return orders_;

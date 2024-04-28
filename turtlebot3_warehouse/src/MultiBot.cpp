@@ -1,12 +1,16 @@
 #include "turtlebot3_warehouse/MultiBot.h"
 #include "turtlebot3_warehouse/TurtleBot3.h"
+#include "turtlebot3_warehouse/taskallocation.h"
 #include <cmath>
 #include <vector>
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/GetPlan.h>
 #include <fstream>
+#include "turtlebot3_warehouse/order.h"
 
-MultiBot::MultiBot(ros::NodeHandle* nh, TurtleBot3Interface tb3Interface) : nh_(*nh), turtleBot3Interface_(tb3Interface) {
+MultiBot::MultiBot(ros::NodeHandle* nh, TurtleBot3Interface tb3Interface, TaskAllocation taskAllocation, std::string include_file_path) : 
+    nh_(*nh), turtleBot3Interface_(tb3Interface), taskAllocation_(taskAllocation), include_file_path_(include_file_path) 
+{
     ROS_INFO("MultiBot initialised with TurtleBot3");
 }
 
@@ -26,80 +30,70 @@ double MultiBot::calculatePlanDistance(const nav_msgs::Path& path) {
     return total_distance;
 }
 
-void MultiBot::calculateLivePlans() {
+void MultiBot::calculateDepotPlans() {
     std::vector<TurtleBot3*> turtlebots = turtleBot3Interface_.getTurtleBotsList();
     int num_tb = turtleBot3Interface_.getNumTurtlebots();
-    //open the CSV file
-    std::ofstream file("../plans.csv");
+    // Open the CSV file
+    std::ofstream file(plans_file_path_);
 
-    //check if you cannot open it
+    // Check if you cannot open it
     if (!file.is_open()) {
         ROS_ERROR("Failed to open file to write plans.");
         return;
     }
-    //top row of the csv file for the columns
+    // Top row of the CSV file for the columns
     file << "Start,End,Distance\n";
 
-    for (int tb = 0; tb < num_tb; ++tb) { //loop through three turtlebots atm
+    // define the depot position
+    geometry_msgs::PoseStamped depot_pose;
+    depot_pose.pose.position.x = 0.0;
+    depot_pose.pose.position.y = 0.0;
+    depot_pose.pose.position.z = 0.0;
+    depot_pose.pose.orientation.w = 1.0;
 
-        if (!turtlebots.at(tb)->hasPoseBeenUpdated()) { //check that we have received AMCL_pose data (from the localisation)
-            ROS_WARN("Pose for TurtleBot %d not updated yet. Waiting...", tb);
-            while (!turtlebots.at(tb)->hasPoseBeenUpdated()) {
-                ros::spinOnce();
-                ros::Duration(0.1).sleep();
-            }
-        }
+    for (int tb = 0; tb < num_tb; ++tb) {
         std::string service_name = "/tb3_" + std::to_string(tb) + "/move_base/make_plan"; 
         ros::ServiceClient client = nh_.serviceClient<nav_msgs::GetPlan>(service_name);
-        geometry_msgs::Pose start_pose = turtlebots.at(tb)->getCurrentPose(); //get the current position of the turtlebot from amcl
 
-        std::string startLocation = "Robot" + std::to_string(tb);
-        ROS_INFO("[Robot %d] Generating plans. Start Pose: x=%.2f, y=%.2f, z=%.2f",
-                 tb, start_pose.position.x, start_pose.position.y, start_pose.position.z);
+        std::string startLocation = "Depot";
 
-        for (size_t i = 0; i < packageCoordinates.size(); ++i) { //loop through each package location
+        for (size_t i = 0; i < packageCoordinates.size(); ++i) { // Loop through each package location
             const auto& coord = packageCoordinates[i];
 
-            nav_msgs::GetPlan srv; //outline the goal position using data from packageCoordinates (from void loadPackages)
+            nav_msgs::GetPlan srv; // Outline the goal position using data from packageCoordinates
             srv.request.start.header.frame_id = "map";
-            srv.request.start.pose = start_pose;
+            srv.request.start.pose = depot_pose.pose;
             srv.request.goal.header.frame_id = "map";
             srv.request.goal.pose.position.x = std::get<0>(coord);
             srv.request.goal.pose.position.y = std::get<1>(coord);
             srv.request.goal.pose.position.z = 0;
             srv.request.goal.pose.orientation.w = 1;
-
             if (client.call(srv)) {
-                double distance = calculatePlanDistance(srv.response.plan); //get path distance
+                double distance = calculatePlanDistance(srv.response.plan); // Get path distance
                 std::string packageNumber = "Package" + std::to_string(i + 1);
 
-                // ROS_INFO("[Robot %d] Plan to %s: Start (x=%.2f, y=%.2f) -> Goal (x=%.2f, y=%.2f) Distance: %.2f",
-                //          tb, packageNumber.c_str(),
-                //          start_pose.position.x, start_pose.position.y,
-                //          std::get<0>(coord), std::get<1>(coord), distance);
-
                 if (distance == 0.00) {
-                    ROS_WARN("[Robot %d] Plan to %s may be off the map or unreachable.",
-                             tb, packageNumber.c_str());
+                    ROS_WARN("Depot Plan to %s may be off the map or unreachable.", packageNumber.c_str());
                 } else {
-                    //save the path length to the CSV file
+                    // Save the path length to the CSV file
                     ROS_INFO_STREAM(startLocation << " plan distance to " << packageNumber << ": " << distance);
                     file << startLocation << "," << packageNumber << "," << distance << "\n";
                 }
             } else {
-                ROS_ERROR("[Robot %d] Failed to call service %s", tb, service_name.c_str());
+                ROS_ERROR("Depot Failed to call service %s", service_name.c_str());
             }
-            ros::Duration(0.1).sleep();
+            ros::Duration(0.1).sleep(); //delay service calls
         }
     }
+    
+    file.close(); //close the csv for later use after all saved
 
-    file.close();
 }
 
 
 void MultiBot::calculateFuturePlans() {
     // Open the CSV file for writing future plan distances
-    std::ofstream file("../plans.csv", std::ios::app);
+    std::ofstream file(plans_file_path_, std::ios::app);
 
     // Check if the file is successfully opened
     if (!file.is_open()) {
@@ -153,54 +147,30 @@ void MultiBot::calculateFuturePlans() {
     ROS_INFO("future plan calculations completed and saved.");
 }
 
+void MultiBot::loadPackages() {
+    // Retrieve the list of orders from taskAllocation
+    std::vector<Order> orders = taskAllocation_.getOrders();
 
+    // Assuming packageCoordinates is a vector of tuples (x, y, z)
+    // Clear existing coordinates
+    packageCoordinates.clear();
 
-void MultiBot::loadPackages(){
+    // Process each order to extract package coordinates
+    for (const Order& order : orders) {
+      
+        // Retrieve pick-up location coordinates
+        unsigned int pickUpX = order.getPickUpLoc(); 
+        unsigned int pickUpY = order.getPickUpLoc(); 
+        unsigned int pickUpZ = 0; 
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-    //here, take in a csv file that has x number of coordinates of packages on the map. 
-    // Unforunately, i think you need to update this manually at this time, or write a prompt for console to enter the correct path.
-    // Seems the GCC compiler this version uses doesn't support std::filesystem :(
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    std::ifstream file("../package_orders.csv");
-    std::string line;
-    
-    //Check if file is open
-    if (!file.is_open()) {
-        std::cerr << "Failed to open file" << std::endl;
-        return;
+        // Retrieve drop-off location coordinates
+        unsigned int dropOffX = order.getDropOffLoc(); 
+        unsigned int dropOffY = order.getDropOffLoc(); 
+        unsigned int dropOffZ = 0; 
+        // Add to packageCoordinates
+        packageCoordinates.emplace_back(std::make_tuple(pickUpX, pickUpY, pickUpZ));
+        packageCoordinates.emplace_back(std::make_tuple(dropOffX, dropOffY, dropOffZ));
     }
-
-    while (std::getline(file, line)) {
-        std::istringstream sstream(line);
-        std::string field;
-        std::vector<double> coordinates;
-
-        // Split line by comma and convert to double
-        while (std::getline(sstream, field, ',')) {
-            coordinates.push_back(std::stod(field));
-        }
-
-        // Assuming each line has exactly 3 coordinates (x, y, z)
-        if (coordinates.size() == 3) {
-            packageCoordinates.push_back(std::make_tuple(coordinates[0], coordinates[1], coordinates[2]));
-        }
-        
-    }
-
-    // After loading the coordinates and closing the file:
-        std::cout << "Loaded package coordinates:" << std::endl;
-        for (const auto& coord : packageCoordinates) {
-            std::cout << "(" 
-                    << std::get<0>(coord) << ", " 
-                    << std::get<1>(coord) << ", " 
-                    << std::get<2>(coord) << ")" 
-                    << std::endl;
-        }
-
-
-    file.close();
+    ROS_INFO("loaded package coordinates in Multibot.cpp");
 }
+

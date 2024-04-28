@@ -1,11 +1,13 @@
 #include "turtlebot3_warehouse/TurtleBot3Interface.h"
 #include "turtlebot3_warehouse/TurtleBot3.h"
 #include <fstream>
+#include <iostream>
 #include <string>
+#include <stdexcept>
 using namespace std;
 
-TurtleBot3Interface::TurtleBot3Interface(ros::NodeHandle* nh) :
-    nh_(*nh) 
+TurtleBot3Interface::TurtleBot3Interface(ros::NodeHandle* nh, std::string include_file_path) :
+    nh_(*nh), include_file_path_(include_file_path) 
 {
     // create the number of turtlebots given in config.txt
     num_turtlebots_ = configSearch("NUM_TURTLEBOTS: ");
@@ -19,6 +21,7 @@ TurtleBot3Interface::TurtleBot3Interface(ros::NodeHandle* nh) :
         topic_num = i;
         topic_string = "/tb3_" + to_string(topic_num) + "/amcl_pose";
         turtlebots_.push_back(new TurtleBot3(&nh_, topic_string));
+        std::cout<<"Created Turtlebot "<<i<<std::endl;
     }
     
     
@@ -34,35 +37,32 @@ int TurtleBot3Interface::getNumTurtlebots(void)
     return num_turtlebots_;
 }
 
-int TurtleBot3Interface::configSearch(std::string config_variable) {
-    std::ifstream config_file("../config.txt");
-    char myChar;
-    std::string myString;
-    std::string stringToInt;
-    if (config_file.is_open())
-    {
-        while (config_file)
-        {
-            myChar = config_file.get();
-            if (myChar != '\n')
-            {
-                myString += myChar;
-            }
-            else
-            {
-                myString.clear();
-            }
-            
-            if (myString == config_variable) // read config file number after "NUM_TURTLEBOTS: "
-            {
-                while (myChar != '\n')
-                {
-                    myChar = config_file.get();
-                    stringToInt += myChar;
+int TurtleBot3Interface::configSearch(const std::string& config_variable) {
+    std::ifstream config_file(include_file_path_ + "/config.txt");
+    std::string line;
+    std::string value_str;
+    int value = 0;
+
+    if (config_file.is_open()) {
+        std::cout << "Config file opened successfully." << std::endl;
+        while (getline(config_file, line)) {
+            size_t pos = line.find(config_variable);
+            if (pos != std::string::npos) {
+                value_str = line.substr(pos + config_variable.size());
+                try {
+                    value = std::stoi(value_str);
+                    std::cout << config_variable << " found: " << value << std::endl;
+                    return value;
+                } catch (const std::invalid_argument& e) {
+                    std::cerr << "Invalid number format in config file: " << e.what() << std::endl;
+                    return -1; // or other error code
                 }
-                return stoi(stringToInt);
             }
         }
+        std::cout << config_variable << " not found in the config file." << std::endl;
+    } else {
+        std::cerr << "Failed to open config file." << std::endl;
     }
+    return -1; // or other error code indicating failure
 }
 

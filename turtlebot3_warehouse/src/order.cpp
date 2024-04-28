@@ -20,15 +20,15 @@ void Order::setDropOffLoc(unsigned int dropOffLoc)
     dropOffLoc_ = dropOffLoc;
 }  
 
-unsigned int Order::getPackageNo(void)
+unsigned int Order::getPackageNo(void) const
 {
     return packageNo_;
 }
-unsigned int Order::getPickUpLoc(void)
+double Order::getPickUpLoc(void) const
 {
     return pickUpLoc_;
 }
-unsigned int Order::getDropOffLoc(void)
+double Order::getDropOffLoc(void) const
 {
     return dropOffLoc_;
 }

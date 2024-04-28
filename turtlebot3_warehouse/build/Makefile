@@ -768,6 +768,33 @@ src/TurtleBot3.cpp.s:
 	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.s
 .PHONY : src/TurtleBot3.cpp.s
 
+src/TurtleBot3Interface.o: src/TurtleBot3Interface.cpp.o
+
+.PHONY : src/TurtleBot3Interface.o
+
+# target to build an object file
+src/TurtleBot3Interface.cpp.o:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o
+.PHONY : src/TurtleBot3Interface.cpp.o
+
+src/TurtleBot3Interface.i: src/TurtleBot3Interface.cpp.i
+
+.PHONY : src/TurtleBot3Interface.i
+
+# target to preprocess a source file
+src/TurtleBot3Interface.cpp.i:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.i
+.PHONY : src/TurtleBot3Interface.cpp.i
+
+src/TurtleBot3Interface.s: src/TurtleBot3Interface.cpp.s
+
+.PHONY : src/TurtleBot3Interface.s
+
+# target to generate assembly for a file
+src/TurtleBot3Interface.cpp.s:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.s
+.PHONY : src/TurtleBot3Interface.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -794,6 +821,60 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/order.o: src/order.cpp.o
+
+.PHONY : src/order.o
+
+# target to build an object file
+src/order.cpp.o:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o
+.PHONY : src/order.cpp.o
+
+src/order.i: src/order.cpp.i
+
+.PHONY : src/order.i
+
+# target to preprocess a source file
+src/order.cpp.i:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.i
+.PHONY : src/order.cpp.i
+
+src/order.s: src/order.cpp.s
+
+.PHONY : src/order.s
+
+# target to generate assembly for a file
+src/order.cpp.s:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.s
+.PHONY : src/order.cpp.s
+
+src/taskallocation.o: src/taskallocation.cpp.o
+
+.PHONY : src/taskallocation.o
+
+# target to build an object file
+src/taskallocation.cpp.o:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o
+.PHONY : src/taskallocation.cpp.o
+
+src/taskallocation.i: src/taskallocation.cpp.i
+
+.PHONY : src/taskallocation.i
+
+# target to preprocess a source file
+src/taskallocation.cpp.i:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.i
+.PHONY : src/taskallocation.cpp.i
+
+src/taskallocation.s: src/taskallocation.cpp.s
+
+.PHONY : src/taskallocation.s
+
+# target to generate assembly for a file
+src/taskallocation.cpp.s:
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.s
+.PHONY : src/taskallocation.cpp.s
 
 # Help Target
 help:
@@ -857,9 +938,18 @@ help:
 	@echo "... src/TurtleBot3.o"
 	@echo "... src/TurtleBot3.i"
 	@echo "... src/TurtleBot3.s"
+	@echo "... src/TurtleBot3Interface.o"
+	@echo "... src/TurtleBot3Interface.i"
+	@echo "... src/TurtleBot3Interface.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/order.o"
+	@echo "... src/order.i"
+	@echo "... src/order.s"
+	@echo "... src/taskallocation.o"
+	@echo "... src/taskallocation.i"
+	@echo "... src/taskallocation.s"
 .PHONY : help
 
 

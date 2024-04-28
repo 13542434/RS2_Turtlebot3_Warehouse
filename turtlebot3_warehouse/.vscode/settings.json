@@ -64,6 +64,17 @@
         "string": "cpp",
         "string_view": "cpp",
         "codecvt": "cpp",
-        "filesystem": "cpp"
-    }
+        "filesystem": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "any": "cpp"
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/nk/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/nk/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ]
 }

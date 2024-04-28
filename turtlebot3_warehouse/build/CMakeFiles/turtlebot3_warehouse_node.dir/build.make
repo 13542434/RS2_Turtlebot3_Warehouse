@@ -153,12 +153,87 @@ CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o.provides: CMakeFil
 CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o.provides.build: CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o
 
 
+CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o: CMakeFiles/turtlebot3_warehouse_node.dir/flags.make
+CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o: ../src/TurtleBot3Interface.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nk/catkin_ws/src/turtlebot3_warehouse/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/TurtleBot3Interface.cpp
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nk/catkin_ws/src/turtlebot3_warehouse/src/TurtleBot3Interface.cpp > CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.i
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nk/catkin_ws/src/turtlebot3_warehouse/src/TurtleBot3Interface.cpp -o CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.s
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.requires:
+
+.PHONY : CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.requires
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.provides: CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.requires
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.provides.build
+.PHONY : CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.provides
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.provides.build: CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o
+
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o: CMakeFiles/turtlebot3_warehouse_node.dir/flags.make
+CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o: ../src/taskallocation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nk/catkin_ws/src/turtlebot3_warehouse/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/taskallocation.cpp
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nk/catkin_ws/src/turtlebot3_warehouse/src/taskallocation.cpp > CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.i
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nk/catkin_ws/src/turtlebot3_warehouse/src/taskallocation.cpp -o CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.s
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.requires:
+
+.PHONY : CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.requires
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.provides: CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.requires
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.provides.build
+.PHONY : CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.provides
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.provides.build: CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o
+
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o: CMakeFiles/turtlebot3_warehouse_node.dir/flags.make
+CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o: ../src/order.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/nk/catkin_ws/src/turtlebot3_warehouse/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/order.cpp
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/nk/catkin_ws/src/turtlebot3_warehouse/src/order.cpp > CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.i
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/nk/catkin_ws/src/turtlebot3_warehouse/src/order.cpp -o CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.s
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.requires:
+
+.PHONY : CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.requires
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.provides: CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.requires
+	$(MAKE) -f CMakeFiles/turtlebot3_warehouse_node.dir/build.make CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.provides.build
+.PHONY : CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.provides
+
+CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.provides.build: CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o
+
+
 # Object files for target turtlebot3_warehouse_node
 turtlebot3_warehouse_node_OBJECTS = \
 "CMakeFiles/turtlebot3_warehouse_node.dir/src/main.cpp.o" \
 "CMakeFiles/turtlebot3_warehouse_node.dir/src/SetGoals.cpp.o" \
 "CMakeFiles/turtlebot3_warehouse_node.dir/src/MultiBot.cpp.o" \
-"CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o"
+"CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o" \
+"CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o" \
+"CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o" \
+"CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o"
 
 # External object files for target turtlebot3_warehouse_node
 turtlebot3_warehouse_node_EXTERNAL_OBJECTS =
@@ -167,6 +242,9 @@ devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/src/SetGoals.cpp.o
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/src/MultiBot.cpp.o
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o
+devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o
+devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o
+devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/build.make
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: /opt/ros/melodic/lib/libroscpp.so
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so
@@ -187,7 +265,7 @@ devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: /usr/lib/x86_64-linux-
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: /usr/lib/x86_64-linux-gnu/libpthread.so
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
 devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node: CMakeFiles/turtlebot3_warehouse_node.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/nk/catkin_ws/src/turtlebot3_warehouse/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/nk/catkin_ws/src/turtlebot3_warehouse/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/turtlebot3_warehouse_node.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -199,6 +277,9 @@ CMakeFiles/turtlebot3_warehouse_node.dir/requires: CMakeFiles/turtlebot3_warehou
 CMakeFiles/turtlebot3_warehouse_node.dir/requires: CMakeFiles/turtlebot3_warehouse_node.dir/src/SetGoals.cpp.o.requires
 CMakeFiles/turtlebot3_warehouse_node.dir/requires: CMakeFiles/turtlebot3_warehouse_node.dir/src/MultiBot.cpp.o.requires
 CMakeFiles/turtlebot3_warehouse_node.dir/requires: CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o.requires
+CMakeFiles/turtlebot3_warehouse_node.dir/requires: CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o.requires
+CMakeFiles/turtlebot3_warehouse_node.dir/requires: CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o.requires
+CMakeFiles/turtlebot3_warehouse_node.dir/requires: CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o.requires
 
 .PHONY : CMakeFiles/turtlebot3_warehouse_node.dir/requires
 
