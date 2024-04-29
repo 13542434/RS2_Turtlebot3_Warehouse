@@ -22,6 +22,9 @@ public:
     unsigned int getPackageNo(void) const;
     double getPickUpLoc(void) const;
     double getDropOffLoc(void) const;
+
+    std::vector<double> getPickUpCoords(void) const;
+    std::vector<double> getDropOffCoords(void) const;
     
 protected:
 
@@ -32,8 +35,8 @@ private:
     unsigned int packageNo_;
     unsigned int pickUpLoc_;
     unsigned int dropOffLoc_;
-    double x, y;
-    std::vector<double> coords_;
+    std::vector<double> pickUpCoords_;
+    std::vector<double> dropOffCoords_;
     std::vector<double> getCoordinates(unsigned int location);
 
 };

@@ -8,7 +8,8 @@ Order::Order(std::string include_file_path, unsigned int packageNo, unsigned int
 include_file_path_(include_file_path), packageNo_(packageNo), pickUpLoc_(pickUpLoc), dropOffLoc_(dropOffLoc)
 {
     std::cout<<"Creating Order..."<<std::endl;
-    std::vector<double> coords_ = getCoordinates(pickUpLoc_);
+    pickUpCoords_ = getCoordinates(pickUpLoc_);
+    dropOffCoords_ = getCoordinates(dropOffLoc_);
 }
 
 void Order::setPackageNo(unsigned int packageNo)
@@ -37,6 +38,15 @@ double Order::getDropOffLoc(void) const
     return dropOffLoc_;
 }
 
+std::vector<double> Order::getPickUpCoords(void) const
+{
+    return pickUpCoords_;
+}
+std::vector<double> Order::getDropOffCoords(void) const
+{
+    return dropOffCoords_;
+}
+
 std::vector<double> Order::getCoordinates(unsigned int location)
 {
     std::vector<double> coords;
@@ -46,9 +56,9 @@ std::vector<double> Order::getCoordinates(unsigned int location)
     int counter = -1;
     int packageNum = 0;
     std::string packageNum_str;
-    int xCoord = 0;
+    double xCoord = 0;
     std::string xCoord_str;
-    int yCoord = 0;
+    double yCoord = 0;
     std::string yCoord_str;
 
     if (addresses_file.is_open())
@@ -69,7 +79,7 @@ std::vector<double> Order::getCoordinates(unsigned int location)
                         // all characters until next comma are the packageNum
                         if (myChar == ',')
                         {
-                            packageNum = stoi(packageNum_str);
+                            packageNum = stod(packageNum_str);
                             addressState++;
                             packageNum_str = "";
                         }
@@ -82,7 +92,7 @@ std::vector<double> Order::getCoordinates(unsigned int location)
                         // all characters until next comma are the xCoord
                         if (myChar == ',')
                         {
-                            xCoord = stoi(xCoord_str);
+                            xCoord = stod(xCoord_str);
                             addressState++;
                             xCoord_str = "";
                         }
@@ -95,7 +105,7 @@ std::vector<double> Order::getCoordinates(unsigned int location)
                         // all characters until next comma are the yCoord
                         if (myChar == ',')
                         {
-                            yCoord = stoi(yCoord_str);
+                            yCoord = stod(yCoord_str);
                             addressState = 0;
                             yCoord_str = "";
                         }
@@ -112,8 +122,8 @@ std::vector<double> Order::getCoordinates(unsigned int location)
 
                 if (packageNo_ == packageNum)
                 {
-                    coords_.push_back(xCoord);
-                    coords_.push_back(yCoord);
+                    coords.push_back(xCoord);
+                    coords.push_back(yCoord);
                     std::cout<<"packageNum: "<<packageNum<<std::endl;
                     std::cout<<"xCoord: "<<xCoord<<std::endl;
                     std::cout<<"yCoord: "<<yCoord<<std::endl;

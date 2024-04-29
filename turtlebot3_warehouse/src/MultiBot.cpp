@@ -151,6 +151,7 @@ void MultiBot::calculateFuturePlans() {
 void MultiBot::loadPackages() {
     // Retrieve the list of orders from taskAllocation
     std::vector<Order> orders = taskAllocation_.getOrders();
+    std::cout<<"num orders: "<<orders.size()<<std::endl;
 
     // Assuming packageCoordinates is a vector of tuples (x, y, z)
     // Clear existing coordinates
@@ -160,18 +161,20 @@ void MultiBot::loadPackages() {
     for (const Order& order : orders) {
       
         // Retrieve pick-up location coordinates
-        unsigned int pickUpX = order.getPickUpLoc(); 
-        unsigned int pickUpY = order.getPickUpLoc(); 
-        unsigned int pickUpZ = 0; 
-
-        // Retrieve drop-off location coordinates
-        unsigned int dropOffX = order.getDropOffLoc(); 
-        unsigned int dropOffY = order.getDropOffLoc(); 
-        unsigned int dropOffZ = 0; 
+        double pickUpX = order.getPickUpCoords().at(0);
+        double pickUpY = order.getPickUpCoords().at(1); 
+        double pickUpZ = 0;
         // Add to packageCoordinates
         packageCoordinates.emplace_back(std::make_tuple(pickUpX, pickUpY, pickUpZ));
-        packageCoordinates.emplace_back(std::make_tuple(dropOffX, dropOffY, dropOffZ));
+
+        // Retrieve drop-off location coordinates if more than one depot
+        // double dropOffX = order.getDropOffCoords().at(0); 
+        // double dropOffY = order.getDropOffCoords().at(1); 
+        // double dropOffZ = 0; 
+        // // Add to packageCoordinates
+        // packageCoordinates.emplace_back(std::make_tuple(dropOffX, dropOffY, dropOffZ));
     }
+    std::cout<<"num packageCoordinates: "<<packageCoordinates.size()<<std::endl;
     ROS_INFO("loaded package coordinates in Multibot.cpp");
 }
 
