@@ -17,7 +17,7 @@ private:
     std::vector<TurtleBot3*> turtlebots_;
     std::string include_file_path_;
     std::string config_file_path_ = include_file_path_ + "/turtlebot3_warehouse/config.txt";
-    int configSearch(std::string config_variable);
+    int configSearch(const std::string& config_variable);
 };
 
 #endif // TURTLEBOT3INTERFACE_H

@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
   
     // ros::Duration(1.0).sleep();
     multiBot.loadPackages();
-    multiBot.calculateLivePlans();
+    multiBot.calculateDepotPlans();
     multiBot.calculateFuturePlans();
 
     // Now enter the ROS event processing loop

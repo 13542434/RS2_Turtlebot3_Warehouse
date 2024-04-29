@@ -2,11 +2,12 @@
 
 Order::Order(std::string include_file_path) : 
     include_file_path_(include_file_path)
-{}
+{std::cout<<"Creating Order..."<<std::endl;}
 
 Order::Order(std::string include_file_path, unsigned int packageNo, unsigned int pickUpLoc, unsigned int dropOffLoc):
 include_file_path_(include_file_path), packageNo_(packageNo), pickUpLoc_(pickUpLoc), dropOffLoc_(dropOffLoc)
 {
+    std::cout<<"Creating Order..."<<std::endl;
     std::vector<double> coords_ = getCoordinates(pickUpLoc_);
 }
 
@@ -23,15 +24,15 @@ void Order::setDropOffLoc(unsigned int dropOffLoc)
     dropOffLoc_ = dropOffLoc;
 }  
 
-unsigned int Order::getPackageNo(void)
+unsigned int Order::getPackageNo(void) const
 {
     return packageNo_;
 }
-unsigned int Order::getPickUpLoc(void)
+double Order::getPickUpLoc(void) const
 {
     return pickUpLoc_;
 }
-unsigned int Order::getDropOffLoc(void)
+double Order::getDropOffLoc(void) const
 {
     return dropOffLoc_;
 }
@@ -39,7 +40,7 @@ unsigned int Order::getDropOffLoc(void)
 std::vector<double> Order::getCoordinates(unsigned int location)
 {
     std::vector<double> coords;
-    std::ifstream adresses_file(adresses_file_path_);
+    std::ifstream addresses_file(addresses_file_path_);
     std::string myText;
     unsigned int addressState = 0;
     int counter = -1;
@@ -50,11 +51,11 @@ std::vector<double> Order::getCoordinates(unsigned int location)
     int yCoord = 0;
     std::string yCoord_str;
 
-    if (adresses_file.is_open())
+    if (addresses_file.is_open())
     {
-        std::cout << "package_orders.csv reads:" << std::endl;
-        while (adresses_file.good()) { 
-            getline(adresses_file, myText);
+        std::cout << "addresses.csv reads:" << std::endl;
+        while (addresses_file.good()) { 
+            getline(addresses_file, myText);
             std::cout << myText << std::endl;
             addressState = 0;
             
@@ -111,8 +112,11 @@ std::vector<double> Order::getCoordinates(unsigned int location)
 
                 if (packageNo_ == packageNum)
                 {
-                    coords_.at(1) = xCoord;
-                    coords_.at(2) = yCoord;
+                    coords_.push_back(xCoord);
+                    coords_.push_back(yCoord);
+                    std::cout<<"packageNum: "<<packageNum<<std::endl;
+                    std::cout<<"xCoord: "<<xCoord<<std::endl;
+                    std::cout<<"yCoord: "<<yCoord<<std::endl;
                     break;
                 }
                 
@@ -129,7 +133,6 @@ std::vector<double> Order::getCoordinates(unsigned int location)
         std::cout << "package_orders.csv could not be read" <<std::endl;
     }  
 
-    std::cout << "Coords are:" << coords.at(1) << ", " << coords.at(2) << std::endl;
 
     return coords;
 }

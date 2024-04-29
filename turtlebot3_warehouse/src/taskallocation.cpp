@@ -32,7 +32,8 @@ bool TaskAllocation::convertPackageOrders(void){
     if (package_orders_file.is_open())
     {
         std::cout << "package_orders.csv reads:" << std::endl;
-        while (package_orders_file.good()) { 
+        while (package_orders_file.good()) 
+        { 
             getline(package_orders_file, myText);
             std::cout << myText << std::endl;
             orderState = 0;
@@ -92,9 +93,10 @@ bool TaskAllocation::convertPackageOrders(void){
                 packageNum = 0;
                 pickUpLoc = 0;
                 dropOffLoc = 0;
+                
             }
             counter++;
-            
+            // std::cout<<"good: "<<package_orders_file.good()<<std::endl;
         }        
     }
     else
@@ -114,6 +116,7 @@ bool TaskAllocation::convertPackageOrders(void){
     return converted = true;
     
 }
+
 
 std::vector<Order> TaskAllocation::getOrders(void){
     return orders_;

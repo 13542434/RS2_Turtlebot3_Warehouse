@@ -6,6 +6,7 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "turtlebot3_warehouse/TurtleBot3Interface.h"
 #include "turtlebot3_warehouse/taskallocation.h"
+#include "turtlebot3_warehouse/order.h"
 
 #include <fstream>
 #include <sstream>
@@ -19,7 +20,7 @@ public:
 
     // void pathCallback(const nav_msgs::Path::ConstPtr& path_msg);
     double calculateDistance(const geometry_msgs::PoseStamped& pose1, const geometry_msgs::PoseStamped& pose2);
-    void calculateLivePlans();
+    void calculateDepotPlans();
     void calculateFuturePlans();
     void loadPackages();  // Load packages from file
     double calculatePlanDistance(const nav_msgs::Path& path);
@@ -34,6 +35,8 @@ private:
     std::string include_file_path_;
     std::string package_orders_file_path_ = include_file_path_ +"/turtlebot3_warehouse/package_orders.csv";
     std::string plans_file_path_ = include_file_path_ + "/turtlebot3_warehouse/plans.csv";
+    // std::string package_orders_file_path_ = "/home/nk/catkin_ws/src/turtlebot3_warehouse/include/turtlebot3_warehouse/package_orders.csv";
+    // std::string plans_file_path_ = + "/home/nk/catkin_ws/src/turtlebot3_warehouse/include/turtlebot3_warehouse/plans.csv";
 };
 
 #endif  // MULTIBOT_H
