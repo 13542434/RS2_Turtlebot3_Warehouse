@@ -88,7 +88,7 @@ bool TaskAllocation::convertPackageOrders(void){
 
                 }            
 
-                orders.push_back(Order(packageNum, pickUpLoc, dropOffLoc));
+                orders.push_back(Order(include_file_path_, packageNum, pickUpLoc, dropOffLoc));
                 packageNum = 0;
                 pickUpLoc = 0;
                 dropOffLoc = 0;
@@ -101,7 +101,7 @@ bool TaskAllocation::convertPackageOrders(void){
     {
         std::cout << "package_orders.csv could not be read" <<std::endl;
         return converted = false;
-    }
+    }  
 
     std::cout << "Orders are:" << std::endl;
     for (auto order:orders)
