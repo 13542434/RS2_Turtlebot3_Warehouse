@@ -22,3 +22,25 @@ bool TurtleBot3::hasPoseBeenUpdated(void) const {
 void TurtleBot3::resetPoseUpdateFlag(void) {
     pose_updated_ = false;
 }
+
+std::vector<std::vector<double>> TurtleBot3::getCurrentAllocation(void) {
+    return currentAllocation_;
+}
+
+unsigned int TurtleBot3::getCurrentAllocationIndex(void) {
+    return currentAllocationIndex_;
+}
+
+void TurtleBot3::setCurrentAllocation(std::vector<std::vector<double>> currentAllocation) {
+    currentAllocation_ = currentAllocation;
+}
+
+void TurtleBot3::setCurrentAllocationIndex(unsigned int currentAllocationIndex) {
+    currentAllocationIndex_ = currentAllocationIndex;
+}
+
+/*
+void TurtleBot3::passNewGoalCallback(service, request, response) {
+    response -> goal pose
+}
+*/

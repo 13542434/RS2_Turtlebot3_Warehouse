@@ -7,7 +7,7 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
-    std::string include_file_path = "/home/charlize/catkin_ws/src/RS2_Turtlebot3_Warehouse/turtlebot3_warehouse/include"; // Change this to your own directory path
+    std::string include_file_path = "/home/charlize/catkin_ws/src/turtlebot3_warehouse/include"; // Change this to your own directory path
     ros::init(argc, argv, "multi_bot");
     ros::NodeHandle nh;
 
@@ -27,8 +27,12 @@ int main(int argc, char** argv) {
   
     // ros::Duration(1.0).sleep();
     multiBot.loadPackages();
-    multiBot.calculateDepotPlans();
+    // Testing the LKH solver currently don't use these plans as they are not generated correctly yet
+    // DO NOT USE // multiBot.calculateDepotPlans();
     multiBot.calculateFuturePlans();
+
+    // Create TSP package allocations (occurs once for all packages before system runs)
+    taskAllocation.executeTSP();
 
     // Now enter the ROS event processing loop
     ros::spin();

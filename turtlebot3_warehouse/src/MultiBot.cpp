@@ -31,6 +31,7 @@ double MultiBot::calculatePlanDistance(const nav_msgs::Path& path) {
 }
 
 void MultiBot::calculateDepotPlans() {
+    // DO NOT USE
     std::vector<TurtleBot3*> turtlebots = turtleBot3Interface_.getTurtleBotsList();
     int num_tb = turtleBot3Interface_.getNumTurtlebots();
     
@@ -47,13 +48,16 @@ void MultiBot::calculateDepotPlans() {
 
     // define the depot position
     geometry_msgs::PoseStamped depot_pose;
-    depot_pose.pose.position.x = 0.0;
-    depot_pose.pose.position.y = 0.0;
+    // use the dropOffCoords for any Order
+    std::vector<Order> orders = taskAllocation_.getOrders();
+    std::vector<double> depotCoords = orders.at(0).getDropOffCoords();
+    depot_pose.pose.position.x = depotCoords.front();
+    depot_pose.pose.position.y = depotCoords.back();
     depot_pose.pose.position.z = 0.0;
     depot_pose.pose.orientation.w = 1.0;
 
-    for (int tb = 0; tb < num_tb; ++tb) {
-        std::string service_name = "/tb3_" + std::to_string(tb) + "/move_base/make_plan"; 
+    // for (int tb = 0; tb < num_tb; ++tb) {
+        std::string service_name = "/tb3_0/move_base/make_plan";
         ros::ServiceClient client = nh_.serviceClient<nav_msgs::GetPlan>(service_name);
 
         std::string startLocation = "Depot";
@@ -85,7 +89,7 @@ void MultiBot::calculateDepotPlans() {
             }
             ros::Duration(0.1).sleep(); //delay service calls
         }
-    }
+    // }
     
     file.close(); //close the csv for later use after all saved
 
@@ -94,53 +98,94 @@ void MultiBot::calculateDepotPlans() {
 
 void MultiBot::calculateFuturePlans() {
     // Open the CSV file for writing future plan distances
-    std::ofstream file(plans_file_path_, std::ios::app);
+    std::ofstream file(plans_file_path_);
+    std::string startLocation;
+    std::string endLocation;
+    double distance;
+    nav_msgs::GetPlan srv;
+    std::vector<double> distanceMatrixRows(packageCoordinates.size(),0);
+    std::vector<std::vector<double>> distanceMatrix(packageCoordinates.size(),distanceMatrixRows);
 
-    // Check if the file is successfully opened
+     // Check if you cannot open it
     if (!file.is_open()) {
-        ROS_ERROR("Failed to open file to write all future plans.");
+        ROS_ERROR("Failed to open file to write plans.");
         return;
     }
+    // Top row of the CSV file for the columns
+    file << "Start,End,Distance\n";
 
-        ros::ServiceClient client = nh_.serviceClient<nav_msgs::GetPlan>("/tb3_0/move_base/make_plan");
+    ros::ServiceClient client = nh_.serviceClient<nav_msgs::GetPlan>("/tb3_0/move_base/make_plan");
 
     // Calculate distances between all possible pairs of goals
     for (size_t i = 0; i < packageCoordinates.size(); ++i) {
         for (size_t j = 0; j < packageCoordinates.size(); ++j) {
-            if (i != j) {
-                
-                //loop through each package between each package
-                //set the start and end point for the make_plan
-                nav_msgs::GetPlan srv;
-                srv.request.start.header.frame_id = "map";
-                srv.request.start.pose.position.x = std::get<0>(packageCoordinates[i]);
-                srv.request.start.pose.position.y = std::get<1>(packageCoordinates[i]);
-                srv.request.start.pose.position.z = 0;
-                srv.request.start.pose.orientation.w = 1;
+        //loop through each package between each package
 
-                srv.request.goal.header.frame_id = "map";
-                srv.request.goal.pose.position.x = std::get<0>(packageCoordinates[j]);
-                srv.request.goal.pose.position.y = std::get<1>(packageCoordinates[j]);
-                srv.request.goal.pose.position.z = 0;
-                srv.request.goal.pose.orientation.w = 1;
-                
-                if (client.call(srv)) {
-                    //calculate distance between start and end points using make_plan
-                    double distance = calculatePlanDistance(srv.response.plan);
-                    
-                    if(distance == 0.00){
-                        ROS_INFO("I think the plan is off the map");
-                    }
-                    else{
-                        //save to CSV file
-                        ROS_INFO("plan distance from package %zu to package %zu: %.2f meters", i + 1, j + 1, distance);
-                        file << "Package" << i+1 << "," << "Package" << j+1 << "," << distance << std::endl;
-                    }
-                } else {
-                    ROS_ERROR("Failed to call service make_plan for future plan calculation between package %zu and %zu", i + 1, j + 1);
-                }
-                ros::Duration(0.1).sleep();
+            if (i == 0)
+            {
+                startLocation = "Depot";
             }
+            else
+            {
+                startLocation = "Package" + std::to_string(i);
+            }
+
+            if (j == 0)
+            {
+                endLocation = "Depot";
+            }
+            else
+            {
+                endLocation = "Package" + std::to_string(j);
+            }
+            
+                             
+            //set the start and end point for the make_plan
+            srv.request.start.header.frame_id = "map";
+            srv.request.start.pose.position.x = std::get<0>(packageCoordinates[i]);
+            srv.request.start.pose.position.y = std::get<1>(packageCoordinates[i]);
+            srv.request.start.pose.position.z = 0;
+            srv.request.start.pose.orientation.w = 1;
+
+            srv.request.goal.header.frame_id = "map";
+            srv.request.goal.pose.position.x = std::get<0>(packageCoordinates[j]);
+            srv.request.goal.pose.position.y = std::get<1>(packageCoordinates[j]);
+            srv.request.goal.pose.position.z = 0;
+            srv.request.goal.pose.orientation.w = 1;
+            
+            if (client.call(srv)) {
+                if (i == j)
+                { // if the package is calculating with itself make it 0
+                    distance = 0;
+                        
+                    //save to CSV file
+                    ROS_INFO("plan distance from package %zu to package %zu: %.2f meters", i, j, distance);
+                    file << startLocation << "," << endLocation << "," << distance << std::endl;
+                }
+                else if (i>j)
+                { // if the plan has been calculated in one direction already, use that distance
+                    distance = distanceMatrix.at(j).at(i);
+
+                    //save to CSV file
+                    ROS_INFO("plan distance from package %zu to package %zu: %.2f meters", i, j, distance);
+                    file << startLocation << "," << endLocation << "," << distance << std::endl;
+                }
+                else
+                {
+                    //calculate distance between start and end points using make_plan
+                    distance = calculatePlanDistance(srv.response.plan);
+                    
+                    //save to CSV file
+                    ROS_INFO("plan distance from package %zu to package %zu: %.2f meters", i, j, distance);
+                    file << startLocation << "," << endLocation << "," << distance << std::endl;
+                }
+                distanceMatrix.at(i).at(j) = distance; //add distance to the distanceMatrix
+            }
+            else 
+            {
+                ROS_ERROR("Failed to call service make_plan for future plan calculation between package %zu and %zu", i, j);
+            }
+            ros::Duration(0.1).sleep();
         }
     }
 
@@ -157,13 +202,19 @@ void MultiBot::loadPackages() {
     // Clear existing coordinates
     packageCoordinates.clear();
 
+    // Place depot coordinates at the start (using any Order)
+    double pickUpX = orders.at(0).getDropOffCoords().at(0);
+    double pickUpY = orders.at(0).getDropOffCoords().at(1); 
+    double pickUpZ = 0;
+    packageCoordinates.emplace_back(std::make_tuple(pickUpX, pickUpY, pickUpZ));
+
     // Process each order to extract package coordinates
     for (const Order& order : orders) {
       
         // Retrieve pick-up location coordinates
-        double pickUpX = order.getPickUpCoords().at(0);
-        double pickUpY = order.getPickUpCoords().at(1); 
-        double pickUpZ = 0;
+        pickUpX = order.getPickUpCoords().at(0);
+        pickUpY = order.getPickUpCoords().at(1); 
+        pickUpZ = 0;
         // Add to packageCoordinates
         packageCoordinates.emplace_back(std::make_tuple(pickUpX, pickUpY, pickUpZ));
 
@@ -178,3 +229,22 @@ void MultiBot::loadPackages() {
     ROS_INFO("loaded package coordinates in Multibot.cpp");
 }
 
+/*
+Start,End,Distance
+Depot,Depot,0
+Depot,Package1,3.3412
+Depot,Package2,7.60412
+Depot,Package3,5.60466
+Package1,Depot,3.3412
+Package1,Package1,0
+Package1,Package2,9.02491
+Package1,Package3,7.04203
+Package2,Depot,7.60412
+Package2,Package1,9.02491
+Package2,Package2,0
+Package2,Package3,2.38358
+Package3,Depot,5.60466
+Package3,Package1,7.04203
+Package3,Package2,2.38358
+Package3,Package3,0
+*/

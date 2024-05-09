@@ -54,8 +54,8 @@ std::vector<double> Order::getCoordinates(unsigned int location)
     std::string myText;
     unsigned int addressState = 0;
     int counter = -1;
-    int packageNum = 0;
-    std::string packageNum_str;
+    int locationNum = 0;
+    std::string locationNum_str;
     double xCoord = 0;
     std::string xCoord_str;
     double yCoord = 0;
@@ -63,7 +63,7 @@ std::vector<double> Order::getCoordinates(unsigned int location)
 
     if (addresses_file.is_open())
     {
-        std::cout << "addresses.csv reads:" << std::endl;
+        // std::cout << "addresses.csv reads:" << std::endl;
         while (addresses_file.good()) { 
             getline(addresses_file, myText);
             std::cout << myText << std::endl;
@@ -76,16 +76,16 @@ std::vector<double> Order::getCoordinates(unsigned int location)
                     switch (addressState)
                     {
                     case 0:
-                        // all characters until next comma are the packageNum
+                        // all characters until next comma are the locationNum
                         if (myChar == ',')
                         {
-                            packageNum = stod(packageNum_str);
+                            locationNum = stod(locationNum_str);
                             addressState++;
-                            packageNum_str = "";
+                            locationNum_str = "";
                         }
                         else
                         {
-                            packageNum_str += myChar;
+                            locationNum_str += myChar;
                         }                        
                         break;
                     case 1:
@@ -120,17 +120,17 @@ std::vector<double> Order::getCoordinates(unsigned int location)
 
                 }            
 
-                if (packageNo_ == packageNum)
+                if (location == locationNum)
                 {
                     coords.push_back(xCoord);
                     coords.push_back(yCoord);
-                    std::cout<<"packageNum: "<<packageNum<<std::endl;
-                    std::cout<<"xCoord: "<<xCoord<<std::endl;
-                    std::cout<<"yCoord: "<<yCoord<<std::endl;
+                    // std::cout<<"locationNum: "<<locationNum<<std::endl;
+                    // std::cout<<"xCoord: "<<xCoord<<std::endl;
+                    // std::cout<<"yCoord: "<<yCoord<<std::endl;
                     break;
                 }
                 
-                packageNum = 0;
+                locationNum = 0;
                 xCoord = 0;
                 yCoord = 0;
             }

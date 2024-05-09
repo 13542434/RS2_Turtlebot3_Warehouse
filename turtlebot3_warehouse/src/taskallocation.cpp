@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <geometry_msgs/Pose.h>
 using namespace std;
 
 TaskAllocation::TaskAllocation(TurtleBot3Interface tb3Interface, std::string include_file_path) :
@@ -48,7 +49,14 @@ bool TaskAllocation::convertPackageOrders(void){
                         // all characters until next comma are the packageNum
                         if (myChar == ',')
                         {
-                            packageNum = stoi(packageNum_str);
+                            if (packageNum_str == "")
+                            {
+                                packageNum = 0;
+                            }
+                            else
+                            {
+                                packageNum = stoi(packageNum_str);
+                            }
                             orderState++;
                             packageNum_str = "";
                         }
@@ -61,7 +69,14 @@ bool TaskAllocation::convertPackageOrders(void){
                         // all characters until next comma are the pickUpLoc
                         if (myChar == ',')
                         {
-                            pickUpLoc = stoi(pickUpLoc_str);
+                            if (pickUpLoc_str == "")
+                            {
+                                pickUpLoc = 0;
+                            }
+                            else
+                            {
+                                pickUpLoc = stoi(pickUpLoc_str);
+                            }
                             orderState++;
                             pickUpLoc_str = "";
                         }
@@ -74,7 +89,14 @@ bool TaskAllocation::convertPackageOrders(void){
                         // all characters until next comma are the dropOffLoc
                         if (myChar == ',')
                         {
-                            dropOffLoc = stoi(dropOffLoc_str);
+                            if (dropOffLoc_str == "")
+                            {
+                                dropOffLoc = 0;
+                            }
+                            else
+                            {
+                                dropOffLoc = stoi(dropOffLoc_str);
+                            }
                             orderState = 0;
                             dropOffLoc_str = "";
                         }
@@ -108,7 +130,9 @@ bool TaskAllocation::convertPackageOrders(void){
     std::cout << "Orders are:" << std::endl;
     for (auto order:orders)
     {
-        std::cout << "packageNo: " << order.getPackageNo() << ", pickUpLoc: " << order.getPickUpLoc() << ", dropOffLoc: " << order.getDropOffLoc() << std::endl;
+        std::cout << "packageNo: " << order.getPackageNo() << ", pickUpLoc: " << order.getPickUpLoc() << ", dropOffLoc: " << order.getDropOffLoc() 
+                  << ", pickUpCoords: [" << order.getPickUpCoords().front() << "," << order.getPickUpCoords().back() << "]"
+                  << ", dropOffCoords: [" << order.getDropOffCoords().front() << "," << order.getDropOffCoords().back() << "]" << std::endl;
     }
 
     orders_ = orders;
@@ -122,12 +146,244 @@ std::vector<Order> TaskAllocation::getOrders(void){
     return orders_;
 }
 
-// make TSP graph <-- get the plans.csv and turn into a graph
 
-// solve TSP using Vehicle Routing Problem (VRP)
-//LKH-3 CVRP (Capacitated Vehicle Routing Problem)
-// Get number of packages at each node from orders_ and transfer in csv
-// execute the task_allocation.py (the paths in there need to change to work in git)
+void TaskAllocation::executeTSP(void){
+    // execute the lkh_cvrp_allocation.py
+    // solve TSP using LKH-3 CVRP (Capacitated Vehicle Routing Problem)
+    // makes TSP graph and solves with LKH <-- get the plans.csv and turn into a graph
+    std::string filename = lkh_file_path_;
+    std::string command = "python ";
+    command += filename;
+    system(command.c_str());
+
+    // store the allocations.csv into a vector of vectors packageAllocations_
+    std::ifstream allocations_file(allocations_file_path_);
+    std::string myText;
+    std::string strToInt;
+    unsigned int myInt;
+    std::vector<unsigned int> packageAllocation;
+    unsigned int packageNum;
+    std::vector<double> pickUpCoords;
+    std::vector<double> dropOffCoords;
+    std::vector<std::vector<double>> goalAllocation;
+
+    if (allocations_file.is_open())
+    {
+        // std::cout << "allocations_file.csv reads:" << std::endl;
+        while (allocations_file.good()) 
+        {
+            getline(allocations_file, myText);
+            for (auto myChar:myText)
+            {
+                if (myChar == ']')
+                {
+                    // end the packageAllocation, start new one
+                    packageAllocations_.push_back(packageAllocation);
+                    packageAllocation.clear();
+                    // end the goalAllocation, start new one
+                    goalAllocation.push_back(dropOffCoords);
+                    goalAllocations_.push_back(goalAllocation);
+                    goalAllocation.clear();
+                }
+                else if (myChar == ' ' || myChar == '[' || myChar == ',')
+                {
+                    // do not add anything
+                }
+                else
+                {
+                    // add numbers to packageAllocation
+                    strToInt += myChar;
+                    myInt = stoi(strToInt);
+                    packageAllocation.push_back(myInt-1);
+                    packageNum = myInt-1;
+                    strToInt = "";
+
+                    // get the coords from orders_
+                    for (auto order:orders_)
+                    {
+                        if (order.getPackageNo() == packageNum)
+                        {
+                            pickUpCoords = order.getPickUpCoords();
+                            goalAllocation.push_back(pickUpCoords);
+                            dropOffCoords = order.getDropOffCoords();
+                        }
+                    }
+                    
+                }
+            }
+            // remove the last vector in packageAllocations_ and goalAllocations_ because its doubled
+            packageAllocations_.erase(packageAllocations_.end());
+            goalAllocations_.erase(goalAllocations_.end());
+        }
+    }
+    else
+    {
+        std::cout << "allocations.csv could not be read" <<std::endl;
+    }
+
+    std::cout<<"packageAllocations_: "<<std::endl;
+    for (auto packages:packageAllocations_)
+    {
+        std::cout<<"[";
+        for (auto package:packages)
+        {
+            std::cout<<package<<" ";
+        }
+        std::cout<<"] ";
+    }
+    std::cout<<std::endl;
+
+    std::cout<<"goalAllocations_: "<<std::endl;
+    for (auto packages:goalAllocations_)
+    {
+        for (auto package:packages)
+        {
+            std::cout<<"["<<package.at(0)<<","<<package.at(1)<<"] ";
+        }
+        std::cout<<std::endl;
+    }
+}
+
+void TaskAllocation::controlGoalPasser(void){
+    // works for a SINGLE turtlebot
+    // only called when Control topic for a new goal is set to TRUE
+    double x_coord;
+    double y_coord;
+    double z_coord;
+    geometry_msgs::Pose pose;
+
+    if (singleAllocation_.empty())
+    { // if theres no goals allocated
+        if (goalAllocationsIndex_<goalAllocations_.size())
+        { // if there are still goal allocations left
+            singleAllocation_ = goalAllocations_.at(goalAllocationsIndex_);
+            goalAllocationsIndex_++;
+        }
+        // otherwise leave the singleAllocation_ empty
+    }
+
+    if (!singleAllocation_.empty()) 
+    { // if the turtlebot has goals to do
+        if (singleAllocationIndex_ < singleAllocation_.size()) 
+        { // if theres still goals in the allocation to get, assign more
+            singleAllocationIndex_++;
+        }
+        else 
+        {
+            if (goalAllocationsIndex_ < goalAllocations_.size()) 
+            { // if there are no more goals in the allocation and there are still allocations left to get, assign more
+                goalAllocationsIndex_++;
+                singleAllocation_ = goalAllocations_.at(goalAllocationsIndex_);
+                singleAllocationIndex_ = 0;
+            }
+            else 
+            { // if theres no more allocations and no more goals, don't set up any more goals
+                singleAllocation_.clear();
+                singleAllocationIndex_ = 0;
+            }
+        }
+    }
+
+    x_coord = singleAllocation_.at(singleAllocationIndex_).front();
+    y_coord = singleAllocation_.at(singleAllocationIndex_).back();
+    z_coord = 0;
+
+    // send ros geometry_msgs/Pose to move_base_simple/goal
+    pose = setPose(x_coord, y_coord, z_coord, 0, 0, 0);
+}
+
+// Send goals one by one to MultiBot for a MULTIPLE turtlebot
+// called during running of program
+void TaskAllocation::goalPasser(void){
+    std::vector<std::vector<double>> currentAllocation;
+    unsigned int currentAllocationIndex;
+    double x_coord;
+    double y_coord;
+    geometry_msgs::Pose pose;
+    bool newGoalFlag;
+    /*
+    turtlebots all have a particular allocation (set of goals) to complete. Once complete, 
+    they move on to the next available allocation that isn't already being used and isn't already finished
+    */
+
+    for (auto turtlebot:turtlebots_)
+    {
+        currentAllocation = turtlebot->getCurrentAllocation();
+        currentAllocationIndex = turtlebot->getCurrentAllocationIndex();
+
+        if (currentAllocation.empty())
+        { // if theres no goals allocated
+            if (goalAllocationsIndex_<goalAllocations_.size())
+            { // if there are still goal allocations left
+                currentAllocation = goalAllocations_.at(goalAllocationsIndex_);
+                goalAllocationsIndex_++;
+            }
+            // otherwise leave the currentAllocation empty
+        }
+
+        if (!currentAllocation.empty()) 
+        { // if the turtlebot has allocations to do
+            // IMPLEMENT WITH MULTIBOT: check the control topic if a new goal is required
+
+            if (newGoalFlag) //if a new goal is needed, change the goal for this turtlebot
+            {
+                if (currentAllocationIndex < currentAllocation.size()) 
+                { // if theres still goals in the allocation to get, assign more
+                    currentAllocationIndex++;
+                    turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
+                }
+                else 
+                {
+                    if (goalAllocationsIndex_ < goalAllocations_.size()) 
+                    { // if there are no more goals in the allocation and there are still allocations left to get, assign more
+                        goalAllocationsIndex_++;
+                        currentAllocation = goalAllocations_.at(goalAllocationsIndex_);
+                        turtlebot->setCurrentAllocation(currentAllocation);
+                        currentAllocationIndex = 0;
+                        turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
+                    }
+                    else 
+                    { // if theres no more allocations and no more goals, don't set up any more goals
+                        currentAllocation.clear();
+                        turtlebot->setCurrentAllocation(currentAllocation);
+                        currentAllocationIndex = 0;
+                        turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
+                    }
+                }
+            }
+        }
+        // IMPLEMENT WITH MULTIBOT: pass the goal for the turtlebot to execute
+
+        // if a new goal is needed get a goal from the allocations
+        x_coord = currentAllocation.at(currentAllocationIndex).front();
+        y_coord = currentAllocation.at(currentAllocationIndex).back();
+        
+        
+        
+    }
+}
+
+geometry_msgs::Pose TaskAllocation::setPose(double x_coord, double y_coord, double z_coord, double roll, double pitch, double yaw) 
+{
+    geometry_msgs::Pose pose;
+    pose.position.x = x_coord;
+    pose.position.y = y_coord;
+    pose.position.z = z_coord;
+
+    double cr = cos(roll * 0.5);
+    double sr = sin(roll * 0.5);
+    double cp = cos(pitch * 0.5);
+    double sp = sin(pitch * 0.5);
+    double cy = cos(yaw * 0.5);
+    double sy = sin(yaw * 0.5);
+
+    pose.orientation.w = cr * cp * cy + sr * sp * sy;
+    pose.orientation.x = sr * cp * cy - cr * sp * sy;
+    pose.orientation.y = cr * sp * cy + sr * cp * sy;
+    pose.orientation.z = cr * cp * sy - sr * sp * cy;
+
+    return pose;
+}
 
 /*
 bool TaskAllocation::nearestNeighbour(void){
