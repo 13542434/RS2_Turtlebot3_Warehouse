@@ -6,6 +6,8 @@
 #include "turtlebot3_warehouse/TurtleBot3Interface.h"
 #include <string>
 #include "ros/ros.h"
+#include "geometry_msgs/PoseStamped.h"
+#include "geometry_msgs/PoseArray.h"
 #include "geometry_msgs/Pose.h"
 using namespace std;
 
@@ -35,7 +37,7 @@ public:
 
     void executeTSP(void);
 
-    void controlGoalPasser(void);
+    geometry_msgs::PoseArray controlGoalArray(void);
 
     void goalPasser(void);
     
@@ -58,6 +60,7 @@ private:
     std::string package_orders_file_path_ = include_file_path_ +"/turtlebot3_warehouse/package_orders.csv";
     std::string lkh_file_path_ = include_file_path_+"/turtlebot3_warehouse/LKH-3.0.6/lkh_cvrp_allocation.py";
     std::string allocations_file_path_ = include_file_path_ + "/turtlebot3_warehouse/allocations.csv";
+    std::string goals_file_path_ = include_file_path_ + "/turtlebot3_warehouse/goals.txt";
 
     std::vector<std::vector<unsigned int>> packageAllocations_; //contains all the task allocations of every order stored by their packageNumber e.g. {{2,1},{3}}
     std::vector<std::vector<std::vector<double>>> goalAllocations_; //contains all the task allocations of every order stored by their goal coords e.g. {{{1,0},{3,0},{-4,0}},{{-5,3},{-4,0}}}

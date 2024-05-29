@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <geometry_msgs/Pose.h>
+#include <cstdlib> // for system()
 using namespace std;
 
 TaskAllocation::TaskAllocation(TurtleBot3Interface tb3Interface, std::string include_file_path) :
@@ -214,6 +215,8 @@ void TaskAllocation::executeTSP(void){
             // remove the last vector in packageAllocations_ and goalAllocations_ because its doubled
             packageAllocations_.erase(packageAllocations_.end());
             goalAllocations_.erase(goalAllocations_.end());
+
+            allocations_file.close();
         }
     }
     else
@@ -242,54 +245,68 @@ void TaskAllocation::executeTSP(void){
         }
         std::cout<<std::endl;
     }
+
+    std::cout<<"TSP complete: "<<std::endl;
 }
 
-void TaskAllocation::controlGoalPasser(void){
-    // works for a SINGLE turtlebot
-    // only called when Control topic for a new goal is set to TRUE
-    double x_coord;
-    double y_coord;
-    double z_coord;
+geometry_msgs::PoseArray TaskAllocation::controlGoalArray(void){
+    geometry_msgs::PoseArray poseArray;
+    geometry_msgs::Pose p;
+
+    for (auto packages:goalAllocations_)
+    {
+        for (auto package:packages)
+        { 
+            p.position.x = package.at(0);
+            p.position.y = package.at(1);
+            std::cout<<package.at(0)<<","<<package.at(1)<<" ";
+            poseArray.poses.push_back(p);
+        }
+    }
+    
+    return poseArray;
+
+/*
+    std::ofstream goals_file(goals_file_path_); //write to file
     geometry_msgs::Pose pose;
+    double x_coord, y_coord;
+    // Create the file for the goal_passer service to create poses
+    // launch the service node from within this function to ensure all the poses were added before the service gets called
+    // service gets called once when the turtlebot finishes localising
+    // all poses for the turtlebot get transferred via the PoseArray
 
-    if (singleAllocation_.empty())
-    { // if theres no goals allocated
-        if (goalAllocationsIndex_<goalAllocations_.size())
-        { // if there are still goal allocations left
-            singleAllocation_ = goalAllocations_.at(goalAllocationsIndex_);
-            goalAllocationsIndex_++;
-        }
-        // otherwise leave the singleAllocation_ empty
+    // File format:
+    // <pose.position.x>,<pose.position.y>,<pose.position.z>,<pose.orientation.x>,<pose.orientation.y>,<pose.orientation.z>,<pose.orientation.w>
+    // ...
+    // Check if you cannot open it
+    if (!goals_file.is_open()) {
+        ROS_ERROR("Failed to open file to write plans.");
+        return;
     }
 
-    if (!singleAllocation_.empty()) 
-    { // if the turtlebot has goals to do
-        if (singleAllocationIndex_ < singleAllocation_.size()) 
-        { // if theres still goals in the allocation to get, assign more
-            singleAllocationIndex_++;
-        }
-        else 
-        {
-            if (goalAllocationsIndex_ < goalAllocations_.size()) 
-            { // if there are no more goals in the allocation and there are still allocations left to get, assign more
-                goalAllocationsIndex_++;
-                singleAllocation_ = goalAllocations_.at(goalAllocationsIndex_);
-                singleAllocationIndex_ = 0;
-            }
-            else 
-            { // if theres no more allocations and no more goals, don't set up any more goals
-                singleAllocation_.clear();
-                singleAllocationIndex_ = 0;
-            }
-        }
+    for (auto goalAllocation : goalAllocations_)
+    {
+        // pass through all the goals
+        x_coord = goalAllocation.front();
+        y_coord = goalAllocation.back();
+        pose = setPose(x_coord, y_coord, 0, 0, 0, 0);
+        goals_file << pose.position.x << "," << pose.position.y << "," << pose.position.z << "," << 
+            pose.orientation.z << "," << pose.orientation.y << "," << pose.orientation.z << "," << pose.orientation.w << std::endl;
     }
 
-    x_coord = singleAllocation_.at(singleAllocationIndex_).front();
-    y_coord = singleAllocation_.at(singleAllocationIndex_).back();
-    z_coord = 0;
+    goals_file.close();
+    
+    
+    // Call roslaunch command to run your launch file
+    std::string launch_file_path = "goal_passer/getPoseArray.launch"; // might relocate to turtlebot_warehouse later
+    std::string command = "roslaunch goal_passer getPoseArray.launch";
+    int result = system(command.c_str());
+    if (result == -1)
+    {
+    ROS_ERROR("Failed to launch goal_passer node");
+    }
+*/
 
-    // send ros geometry_msgs/Pose to move_base_simple/goal
-    pose = setPose(x_coord, y_coord, z_coord, 0, 0, 0);
 }
 
 // Send goals one by one to MultiBot for a MULTIPLE turtlebot
@@ -300,16 +317,25 @@ void TaskAllocation::goalPasser(void){
     double x_coord;
     double y_coord;
     geometry_msgs::Pose pose;
-    bool newGoalFlag;
+    unsigned int turtlebotNum = 0;
+    bool newGoalFlag = true;
     /*
     turtlebots all have a particular allocation (set of goals) to complete. Once complete, 
     they move on to the next available allocation that isn't already being used and isn't already finished
     */
+    std::cout<<"goalPasser()"<<std::endl;
 
     for (auto turtlebot:turtlebots_)
     {
+        std::cout<<"Turtlebot "<<turtlebotNum<<std::endl;
         currentAllocation = turtlebot->getCurrentAllocation();
+        for (auto goal:currentAllocation)
+        {
+            std::cout<<"["<<goal.front()<<","<<goal.back()<<"]"<<std::endl;
+        }
+        
         currentAllocationIndex = turtlebot->getCurrentAllocationIndex();
+        std::cout<<"currentAllocationIndex: "<<currentAllocationIndex<<std::endl;
 
         if (currentAllocation.empty())
         { // if theres no goals allocated
@@ -351,14 +377,17 @@ void TaskAllocation::goalPasser(void){
                     }
                 }
             }
-        }
-        // IMPLEMENT WITH MULTIBOT: pass the goal for the turtlebot to execute
 
-        // if a new goal is needed get a goal from the allocations
-        x_coord = currentAllocation.at(currentAllocationIndex).front();
-        y_coord = currentAllocation.at(currentAllocationIndex).back();
-        
-        
+            // IMPLEMENT WITH MULTIBOT: pass the goal for the turtlebot to execute
+
+            // if a new goal is needed get a goal from the allocations
+            x_coord = currentAllocation.at(currentAllocationIndex).front();
+            y_coord = currentAllocation.at(currentAllocationIndex).back();
+            
+            pose = setPose(x_coord, y_coord, 0, 0, 0, 0);
+            std::cout<< "Turtlebot "<< turtlebotNum << " goal " << "x: " << pose.position.x << "y: " << pose.position.y <<std::endl;
+        }
+        turtlebotNum++;
         
     }
 }

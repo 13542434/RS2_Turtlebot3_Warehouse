@@ -173,18 +173,20 @@ output = lkh.solve(solver_path, problem=problem, max_trials=10, runs=10)
 # [[x,x], [x]]
 
 # write the output to the allocations.csv file
-allocation_str = ""
-line_str = ""
-allocationNum = 1
-for allocations in output:
-    line_str = "Allocation" + str(allocationNum)
-    for package in allocations:
-        line_str += ",Package" + str(package-1)
-    line_str += "\n"
-    allocation_str += line_str
-    allocationNum += 1
+# allocation_str = ""
+# line_str = ""
+# allocationNum = 1
+# for allocations in output:
+#     line_str = "Allocation" + str(allocationNum)
+#     for package in allocations:
+#         line_str += ",Package" + str(package-1)
+#     line_str += "\n"
+#     allocation_str += line_str
+#     allocationNum += 1
 
-# print(allocation_str)
+allocation_str = str(output)
+
+print(allocation_str)
 # Example:
 # Allocation1,Package1,Package2
 # Allocation2,Package4,Package3

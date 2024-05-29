@@ -1,0 +1,5 @@
+<!-- getPoseArray.launch -->
+<launch>
+    <node pkg="goal_passer" type="srv_getPoseArray.py" name="get_pose_array_server" output="screen"/>
+</launch>
+

@@ -16,7 +16,7 @@ Add these files into ~/catkin_ws/src
 		OR
 	rosrun turtlebot3_warehouse turtlebot3_warehouse_node
 
-
+lkh python library must be installed for the TSP solver to work: https://pypi.org/project/lkh/
 /
 /
 /

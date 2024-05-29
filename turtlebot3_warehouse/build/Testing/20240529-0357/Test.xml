@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="(empty)"
-	BuildStamp="20240422-0111-Experimental"
+	BuildStamp="20240529-0357-Experimental"
 	Name="charlize-HP-Spectre-Pro-x360-G2"
 	Generator="ctest-3.10.2"
 	CompilerName="/usr/bin/c++"
@@ -21,14 +21,14 @@
 	TotalVirtualMemory="2047"
 	TotalPhysicalMemory="7865"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="2410.02"
+	ProcessorClockFrequency="2700"
 	>
 	<Testing>
-		<StartDateTime>Apr 22 11:11 AEST</StartDateTime>
-		<StartTestTime>1713748281</StartTestTime>
+		<StartDateTime>May 29 14:01 AEST</StartDateTime>
+		<StartTestTime>1716955264</StartTestTime>
 		<TestList/>
-		<EndDateTime>Apr 22 11:11 AEST</EndDateTime>
-		<EndTestTime>1713748281</EndTestTime>
+		<EndDateTime>May 29 14:01 AEST</EndDateTime>
+		<EndTestTime>1716955264</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

@@ -15,7 +15,7 @@ int main(int argc, char** argv) {
 
     TaskAllocation taskAllocation(tb3Interface, include_file_path);
 
-    // SetGoals setGoals(&nh);
+    SetGoals setGoals(&nh);
 
     // Optional: wait a bit for subscribers to connect
     ros::Duration(1.0).sleep(); // Sleep for a second, adjust as needed
@@ -33,6 +33,9 @@ int main(int argc, char** argv) {
 
     // Create TSP package allocations (occurs once for all packages before system runs)
     taskAllocation.executeTSP();
+    std::cout<<"TESTING"<<std::endl;
+    geometry_msgs::PoseArray goalArray = taskAllocation.controlGoalArray();
+    setGoals.publishGoalArray(goalArray);
 
     // Now enter the ROS event processing loop
     ros::spin();
