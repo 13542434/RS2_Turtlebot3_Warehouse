@@ -61,6 +61,17 @@
         "optional": "cpp",
         "random": "cpp",
         "set": "cpp",
-        "string": "cpp"
-    }
+        "string": "cpp",
+        "unordered_set": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp"
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/nk/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/nk/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ]
 }

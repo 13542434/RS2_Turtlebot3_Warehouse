@@ -9,6 +9,9 @@
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/PoseArray.h"
 #include "geometry_msgs/Pose.h"
+#include <actionlib_msgs/GoalStatusArray.h>
+#include <map>
+#include "turtlebot3_warehouse/SetGoals.h"
 using namespace std;
 
 // Include any other header files this class relies on
@@ -52,6 +55,7 @@ private:
     // bool nearestNeighbour(void);
 
     std::vector<Order> orders_;
+   
 
     TurtleBot3Interface turtleBot3Interface_;  // Instance of TurtleBot3Interface
     std::vector<TurtleBot3*> turtlebots_;
@@ -69,6 +73,20 @@ private:
     unsigned int singleAllocationIndex_ = 0; //only used for controlGoalPasser
 
     geometry_msgs::Pose setPose(double x_coord, double y_coord, double z_coord, double roll, double pitch, double yaw);
+    
+    geometry_msgs::Pose getNextGoal(unsigned int turtlebotIndex);
+
+    ros::Subscriber status_sub_;
+    std::vector<int> turtlebot_status_;
+
+    // SetGoals setGoals_;
+
+    std::map<unsigned int, actionlib_msgs::GoalStatusArray> goalStatuses_;
+    void goalStatusCallback(const actionlib_msgs::GoalStatusArray::ConstPtr& msg, unsigned int turtlebotIndex);
+    ros::NodeHandle nh_;
+    actionlib_msgs::GoalStatusArray updateGoalStatus(unsigned int turtlebotIndex);
+    
+
     
 };
 

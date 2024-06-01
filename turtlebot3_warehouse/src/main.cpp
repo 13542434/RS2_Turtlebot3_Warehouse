@@ -6,8 +6,12 @@
 #include "turtlebot3_warehouse/order.h"
 #include <iostream>
 
+void goalPasserCallback(const ros::TimerEvent&, TaskAllocation& taskAllocation) {
+    taskAllocation.goalPasser();
+}
+
 int main(int argc, char** argv) {
-    std::string include_file_path = "/home/charlize/catkin_ws/src/turtlebot3_warehouse/include"; // Change this to your own directory path
+    std::string include_file_path = "/home/nk/catkin_ws/src/turtlebot3_warehouse/include"; // Change this to your own directory path
     ros::init(argc, argv, "multi_bot");
     ros::NodeHandle nh;
 
@@ -33,11 +37,18 @@ int main(int argc, char** argv) {
     // Create TSP package allocations (occurs once for all packages before system runs)
     taskAllocation.executeTSP();
     std::cout<<"TESTING"<<std::endl;
-    geometry_msgs::PoseArray goalArray = taskAllocation.controlGoalArray();
-    setGoals.publishGoalArray(goalArray);
+    // geometry_msgs::PoseArray goalArray = taskAllocation.controlGoalArray();
+    // setGoals.publishGoalArray(goalArray);
 
+    // ros::Timer timer = nh.createTimer(ros::Duration(1.0), boost::bind(goalPasserCallback, _1, boost::ref(taskAllocation)));
+    ros::Rate rate(1); // Adjust the rate as needed
+    while (ros::ok()) {
+        taskAllocation.goalPasser();
+        ros::spinOnce(); 
+        rate.sleep();
+    }
     // Now enter the ROS event processing loop
-    ros::spin();
+    // ros::spin();
 
     return 0;
 }

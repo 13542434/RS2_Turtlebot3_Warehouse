@@ -15,7 +15,35 @@ TaskAllocation::TaskAllocation(TurtleBot3Interface tb3Interface, std::string inc
 {
     turtlebots_ = turtleBot3Interface_.getTurtleBotsList();
     convertPackageOrders();
+
+    for (unsigned int i = 0; i < turtlebots_.size(); ++i){
+        std::string status_topic = "/tb3_" + std::to_string(i) + "/move_base/status";
+        nh_.subscribe<actionlib_msgs::GoalStatusArray>(status_topic, 10, boost::bind(&TaskAllocation::goalStatusCallback, this, _1, i));
+        std::cout << "Subscribed to " << status_topic << std::endl; 
+    }
 }
+
+
+
+actionlib_msgs::GoalStatusArray TaskAllocation::updateGoalStatus(unsigned int turtlebotIndex) {
+    actionlib_msgs::GoalStatusArray statusArray;
+    std::string status_topic = "/tb3_" + std::to_string(turtlebotIndex) + "/move_base/status";
+    auto status_sub = nh_.subscribe<actionlib_msgs::GoalStatusArray>(status_topic, 1, [&](const actionlib_msgs::GoalStatusArray::ConstPtr& msg) {
+        statusArray = *msg;
+    });
+
+    // Spin and wait for a short period to receive the message
+    ros::Rate rate(10);
+    for (int i = 0; i < 10; ++i) {  // Wait for up to 1 second (10 * 0.1s)
+        ros::spinOnce();
+        if (!statusArray.status_list.empty()) {
+            break;
+        }
+        rate.sleep();
+    }
+    return statusArray;
+}
+
 
 bool TaskAllocation::convertPackageOrders(void){
     bool converted;
@@ -267,93 +295,87 @@ geometry_msgs::PoseArray TaskAllocation::controlGoalArray(void){
 
 }
 
-// Send goals one by one to MultiBot for a MULTIPLE turtlebot
-// called during running of program
-void TaskAllocation::goalPasser(void){
+void TaskAllocation::goalStatusCallback(const actionlib_msgs::GoalStatusArray::ConstPtr& msg, unsigned int turtlebotIndex)
+{
+    goalStatuses_[turtlebotIndex] = *msg;
+    std::cout << "Received status for TurtleBot " << turtlebotIndex << ": ";
+    for (const auto& status : msg->status_list) {
+        std::cout << "Goal ID: " << status.goal_id.id << " Status: " << static_cast<int>(status.status) << " ";
+    }
+    std::cout << std::endl;
+}
 
-
+void TaskAllocation::goalPasser(void) 
+{
     std::vector<geometry_msgs::Pose> currentAllocation;
     unsigned int currentAllocationIndex;
-    // double x_coord;
-    // double y_coord;
     geometry_msgs::Pose pose;
     unsigned int turtlebotNum = 0;
-    bool newGoalFlag = true;
-    
-    // turtlebots all have a particular allocation (set of goals) to complete. Once complete, 
-    // they move on to the next available allocation that isn't already being used and isn't already finished
-    
-    std::cout<<"goalPasser()"<<std::endl;
 
-    for (auto turtlebot:turtlebots_)
-    {
-        std::cout<<"Turtlebot "<<turtlebotNum<<std::endl;
+    SetGoals setGoals(&nh_);
+
+    for (auto turtlebot : turtlebots_) {
         currentAllocation = turtlebot->getCurrentAllocation();
-        for (auto goal:currentAllocation)
-        {
-            std::cout<<"["<<goal.position.x<<","<<goal.position.y<<"]"<<std::endl;
-        }
-        
         currentAllocationIndex = turtlebot->getCurrentAllocationIndex();
-        std::cout<<"currentAllocationIndex: "<<currentAllocationIndex<<std::endl;
 
-        if (currentAllocation.empty())
-        { // if theres no goals allocated
-            if (goalAllocationsIndex_<goalAllocations_.size())
-            { // if there are still goal allocations left
+        if (currentAllocation.empty() && goalAllocationsIndex_ < goalAllocations_.size()){
+            currentAllocation = goalAllocations_.at(goalAllocationsIndex_);
+            goalAllocationsIndex_++;
+            turtlebot->setCurrentAllocation(currentAllocation);
+            currentAllocationIndex = 0;
+            turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
+        }
+
+        if (!currentAllocation.empty()){
+            
+            actionlib_msgs::GoalStatusArray statusArray = updateGoalStatus(turtlebotNum); //get goal status
+            bool isGoalActive = false;
+            bool isGoalSucceeded = false;
+
+            std::cout << "Checking status for turtlebot " << turtlebotNum << ": ";
+            for (const auto& status : statusArray.status_list) {
+                std::cout << "Goal ID: " << status.goal_id.id << " Status: " << static_cast<int>(status.status) << " ";
+                if (status.status == actionlib_msgs::GoalStatus::ACTIVE || status.status == actionlib_msgs::GoalStatus::PENDING){
+                    isGoalActive = true;
+                } else if (status.status == actionlib_msgs::GoalStatus::SUCCEEDED) {
+                    isGoalSucceeded = true;
+                }
+            }
+            std::cout << std::endl;
+
+            if (!isGoalActive && (currentAllocationIndex < currentAllocation.size())) {
+                pose = currentAllocation.at(currentAllocationIndex);
+                currentAllocationIndex++;
+                turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
+
+                if (turtlebotNum == 0) {
+                    setGoals.publishGoal(pose.position.x, pose.position.y, "map", setGoals.goal_pub_tb3_0);
+                } else if (turtlebotNum == 1) {
+                    setGoals.publishGoal(pose.position.x, pose.position.y, "map", setGoals.goal_pub_tb3_1);
+                }
+                // else if (turtlebotNum == 2) {
+                //     setGoals.publishGoal(pose.position.x, pose.position.y, "map", setGoals.goal_pub_tb3_2);
+                // }
+            } else if (isGoalSucceeded && (goalAllocationsIndex_ < goalAllocations_.size())){
                 currentAllocation = goalAllocations_.at(goalAllocationsIndex_);
                 goalAllocationsIndex_++;
-            }
-            // otherwise leave the currentAllocation empty
-        }
-
-        if (!currentAllocation.empty()) 
-        { // if the turtlebot has allocations to do
-            // CHANGE IMPLEMENT WITH MULTIBOT: check the control topic if a new goal is required for each turtlebot
-
-            if (newGoalFlag) //if a new goal is needed, change the goal for this turtlebot
-            {
-                if (currentAllocationIndex < currentAllocation.size()) 
-                { // if theres still goals in the allocation to get, assign more
-                    currentAllocationIndex++;
-                    turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
-                }
-                else 
-                {
-                    if (goalAllocationsIndex_ < goalAllocations_.size()) 
-                    { // if there are no more goals in the allocation and there are still allocations left to get, assign more
-                        goalAllocationsIndex_++;
-                        currentAllocation = goalAllocations_.at(goalAllocationsIndex_);
-                        turtlebot->setCurrentAllocation(currentAllocation);
-                        currentAllocationIndex = 0;
-                        turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
-                    }
-                    else 
-                    { // if theres no more allocations and no more goals, don't set up any more goals
-                        currentAllocation.clear();
-                        turtlebot->setCurrentAllocation(currentAllocation);
-                        currentAllocationIndex = 0;
-                        turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
-                    }
-                }
+                turtlebot->setCurrentAllocation(currentAllocation);
+                currentAllocationIndex = 0;
+                turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
             }
 
-            // IMPLEMENT WITH MULTIBOT: pass the goal for the turtlebot to execute
+            // Output current status for debugging
+            std::cout << "Turtlebot " << turtlebotNum << " status: " << (isGoalActive ? "goal active" : "mo active goal") << std::endl;
+            std::cout << "Current allocation index: " << currentAllocationIndex << std::endl;
+            if (!currentAllocation.empty()) {
+                std::cout << "goal position: (" << currentAllocation[currentAllocationIndex - 1].position.x << ", " << currentAllocation[currentAllocationIndex - 1].position.y << ")" << std::endl;
+            }
 
-            // if a new goal is needed get a goal from the allocations
-            // x_coord = currentAllocation.at(currentAllocationIndex).front();
-            // y_coord = currentAllocation.at(currentAllocationIndex).back();
-            
-            pose = currentAllocation.at(currentAllocationIndex);
-            std::cout<< "Turtlebot "<< turtlebotNum << " goal " << "x: " << pose.position.x << "y: " << pose.position.y <<std::endl;
+            turtlebotNum++;
         }
-        turtlebotNum++;
-        
     }
-
-
-
 }
+
 
 geometry_msgs::Pose TaskAllocation::setPose(double x_coord, double y_coord, double z_coord, double roll, double pitch, double yaw) 
 {
