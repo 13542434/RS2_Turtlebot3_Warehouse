@@ -3,6 +3,7 @@
 
 #include "ros/ros.h"
 #include "geometry_msgs/PoseWithCovarianceStamped.h"
+#include "geometry_msgs/Pose.h"
 #include <vector>
 #include <array>
 
@@ -12,9 +13,9 @@ public:
     geometry_msgs::Pose getCurrentPose(void) const;
     bool hasPoseBeenUpdated(void) const;
     void resetPoseUpdateFlag(void);
-    std::vector<std::vector<double>> getCurrentAllocation(void);
+    std::vector<geometry_msgs::Pose> getCurrentAllocation(void);
     unsigned int getCurrentAllocationIndex(void);
-    void setCurrentAllocation(std::vector<std::vector<double>> currentAllocation);
+    void setCurrentAllocation(std::vector<geometry_msgs::Pose> currentAllocation);
     void setCurrentAllocationIndex(unsigned int currentAllocationIndex);
 
 private:
@@ -24,7 +25,7 @@ private:
     geometry_msgs::Pose current_pose_;
     bool pose_updated_ = false;
     ros::Subscriber pose_sub_;
-    std::vector<std::vector<double>> currentAllocation_; //A set of allocated goals to achieve in a single trip, including the depot stop
+    std::vector<geometry_msgs::Pose> currentAllocation_; //A set of allocated goals to achieve in a single trip, including the depot stop
     unsigned int currentAllocationIndex_ = 0; //The index of the currentAllocations_
 };
 

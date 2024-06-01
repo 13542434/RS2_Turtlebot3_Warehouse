@@ -132,8 +132,8 @@ bool TaskAllocation::convertPackageOrders(void){
     for (auto order:orders)
     {
         std::cout << "packageNo: " << order.getPackageNo() << ", pickUpLoc: " << order.getPickUpLoc() << ", dropOffLoc: " << order.getDropOffLoc() 
-                  << ", pickUpCoords: [" << order.getPickUpCoords().front() << "," << order.getPickUpCoords().back() << "]"
-                  << ", dropOffCoords: [" << order.getDropOffCoords().front() << "," << order.getDropOffCoords().back() << "]" << std::endl;
+                  << ", pickUpPose: [" << order.getPickUpPose().position.x << "," << order.getPickUpPose().position.y << "]"
+                  << ", dropOffPose: [" << order.getDropOffPose().position.x << "," << order.getDropOffPose().position.y << "]" << std::endl;
     }
 
     orders_ = orders;
@@ -164,9 +164,9 @@ void TaskAllocation::executeTSP(void){
     unsigned int myInt;
     std::vector<unsigned int> packageAllocation;
     unsigned int packageNum;
-    std::vector<double> pickUpCoords;
-    std::vector<double> dropOffCoords;
-    std::vector<std::vector<double>> goalAllocation;
+    geometry_msgs::Pose pickUpPose;
+    geometry_msgs::Pose dropOffPose;
+    std::vector<geometry_msgs::Pose> goalAllocation;
 
     if (allocations_file.is_open())
     {
@@ -182,7 +182,7 @@ void TaskAllocation::executeTSP(void){
                     packageAllocations_.push_back(packageAllocation);
                     packageAllocation.clear();
                     // end the goalAllocation, start new one
-                    goalAllocation.push_back(dropOffCoords);
+                    goalAllocation.push_back(dropOffPose);
                     goalAllocations_.push_back(goalAllocation);
                     goalAllocation.clear();
                 }
@@ -204,9 +204,9 @@ void TaskAllocation::executeTSP(void){
                     {
                         if (order.getPackageNo() == packageNum)
                         {
-                            pickUpCoords = order.getPickUpCoords();
-                            goalAllocation.push_back(pickUpCoords);
-                            dropOffCoords = order.getDropOffCoords();
+                            pickUpPose = order.getPickUpPose();
+                            goalAllocation.push_back(pickUpPose);
+                            dropOffPose = order.getDropOffPose();
                         }
                     }
                     
@@ -241,7 +241,7 @@ void TaskAllocation::executeTSP(void){
     {
         for (auto package:packages)
         {
-            std::cout<<"["<<package.at(0)<<","<<package.at(1)<<"] ";
+            std::cout<<"["<<package.position.x<<","<<package.position.y<<"] ";
         }
         std::cout<<std::endl;
     }
@@ -250,79 +250,39 @@ void TaskAllocation::executeTSP(void){
 }
 
 geometry_msgs::PoseArray TaskAllocation::controlGoalArray(void){
+
+    std::cout<<"controlGoalPasser()"<<std::endl;
     geometry_msgs::PoseArray poseArray;
-    geometry_msgs::Pose p;
 
     for (auto packages:goalAllocations_)
     {
         for (auto package:packages)
         { 
-            p.position.x = package.at(0);
-            p.position.y = package.at(1);
-            std::cout<<package.at(0)<<","<<package.at(1)<<" ";
-            poseArray.poses.push_back(p);
+            poseArray.poses.push_back(package);
+            std::cout<< package.position.x <<","<< package.position.y <<" ";
         }
     }
     
     return poseArray;
-
-/*
-    std::ofstream goals_file(goals_file_path_); //write to file
-    geometry_msgs::Pose pose;
-    double x_coord, y_coord;
-    // Create the file for the goal_passer service to create poses
-    // launch the service node from within this function to ensure all the poses were added before the service gets called
-    // service gets called once when the turtlebot finishes localising
-    // all poses for the turtlebot get transferred via the PoseArray
-
-    // File format:
-    // <pose.position.x>,<pose.position.y>,<pose.position.z>,<pose.orientation.x>,<pose.orientation.y>,<pose.orientation.z>,<pose.orientation.w>
-    // ...
-    // Check if you cannot open it
-    if (!goals_file.is_open()) {
-        ROS_ERROR("Failed to open file to write plans.");
-        return;
-    }
-
-    for (auto goalAllocation : goalAllocations_)
-    {
-        // pass through all the goals
-        x_coord = goalAllocation.front();
-        y_coord = goalAllocation.back();
-        pose = setPose(x_coord, y_coord, 0, 0, 0, 0);
-        goals_file << pose.position.x << "," << pose.position.y << "," << pose.position.z << "," << 
-            pose.orientation.z << "," << pose.orientation.y << "," << pose.orientation.z << "," << pose.orientation.w << std::endl;
-    }
-
-    goals_file.close();
-    
-    
-    // Call roslaunch command to run your launch file
-    std::string launch_file_path = "goal_passer/getPoseArray.launch"; // might relocate to turtlebot_warehouse later
-    std::string command = "roslaunch goal_passer getPoseArray.launch";
-    int result = system(command.c_str());
-    if (result == -1)
-    {
-    ROS_ERROR("Failed to launch goal_passer node");
-    }
-*/
 
 }
 
 // Send goals one by one to MultiBot for a MULTIPLE turtlebot
 // called during running of program
 void TaskAllocation::goalPasser(void){
-    std::vector<std::vector<double>> currentAllocation;
+
+
+    std::vector<geometry_msgs::Pose> currentAllocation;
     unsigned int currentAllocationIndex;
-    double x_coord;
-    double y_coord;
+    // double x_coord;
+    // double y_coord;
     geometry_msgs::Pose pose;
     unsigned int turtlebotNum = 0;
     bool newGoalFlag = true;
-    /*
-    turtlebots all have a particular allocation (set of goals) to complete. Once complete, 
-    they move on to the next available allocation that isn't already being used and isn't already finished
-    */
+    
+    // turtlebots all have a particular allocation (set of goals) to complete. Once complete, 
+    // they move on to the next available allocation that isn't already being used and isn't already finished
+    
     std::cout<<"goalPasser()"<<std::endl;
 
     for (auto turtlebot:turtlebots_)
@@ -331,7 +291,7 @@ void TaskAllocation::goalPasser(void){
         currentAllocation = turtlebot->getCurrentAllocation();
         for (auto goal:currentAllocation)
         {
-            std::cout<<"["<<goal.front()<<","<<goal.back()<<"]"<<std::endl;
+            std::cout<<"["<<goal.position.x<<","<<goal.position.y<<"]"<<std::endl;
         }
         
         currentAllocationIndex = turtlebot->getCurrentAllocationIndex();
@@ -349,7 +309,7 @@ void TaskAllocation::goalPasser(void){
 
         if (!currentAllocation.empty()) 
         { // if the turtlebot has allocations to do
-            // IMPLEMENT WITH MULTIBOT: check the control topic if a new goal is required
+            // CHANGE IMPLEMENT WITH MULTIBOT: check the control topic if a new goal is required for each turtlebot
 
             if (newGoalFlag) //if a new goal is needed, change the goal for this turtlebot
             {
@@ -381,15 +341,18 @@ void TaskAllocation::goalPasser(void){
             // IMPLEMENT WITH MULTIBOT: pass the goal for the turtlebot to execute
 
             // if a new goal is needed get a goal from the allocations
-            x_coord = currentAllocation.at(currentAllocationIndex).front();
-            y_coord = currentAllocation.at(currentAllocationIndex).back();
+            // x_coord = currentAllocation.at(currentAllocationIndex).front();
+            // y_coord = currentAllocation.at(currentAllocationIndex).back();
             
-            pose = setPose(x_coord, y_coord, 0, 0, 0, 0);
+            pose = currentAllocation.at(currentAllocationIndex);
             std::cout<< "Turtlebot "<< turtlebotNum << " goal " << "x: " << pose.position.x << "y: " << pose.position.y <<std::endl;
         }
         turtlebotNum++;
         
     }
+
+
+
 }
 
 geometry_msgs::Pose TaskAllocation::setPose(double x_coord, double y_coord, double z_coord, double roll, double pitch, double yaw) 

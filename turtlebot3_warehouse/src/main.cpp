@@ -27,8 +27,7 @@ int main(int argc, char** argv) {
   
     // ros::Duration(1.0).sleep();
     multiBot.loadPackages();
-    // Testing the LKH solver currently don't use these plans as they are not generated correctly yet
-    // DO NOT USE // multiBot.calculateDepotPlans();
+    // DO NOT USE, no longer need calculateDepotPlans // multiBot.calculateDepotPlans();
     multiBot.calculateFuturePlans();
 
     // Create TSP package allocations (occurs once for all packages before system runs)

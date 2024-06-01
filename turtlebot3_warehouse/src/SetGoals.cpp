@@ -5,7 +5,7 @@ SetGoals::SetGoals(ros::NodeHandle* nodehandle): nh(*nodehandle) {
     // Initialize publishers for both robots
     goal_pub_tb3_0 = nh.advertise<geometry_msgs::PoseStamped>("/tb3_0/move_base_simple/goal", 10);
     goal_pub_tb3_1 = nh.advertise<geometry_msgs::PoseStamped>("/tb3_1/move_base_simple/goal", 10);
-    goalArray_pub = nh.advertise<geometry_msgs::PoseArray>("/goalArrayTopic", 10);
+    goalArray_pub = nh.advertise<geometry_msgs::PoseArray>("/goalArrayTopic", 10); //CHANGE: Frank to provide the topic
 }
 
 void SetGoals::publishGoals() {
@@ -19,12 +19,6 @@ void SetGoals::publishGoalArray(geometry_msgs::PoseArray goalArray) {
     
     goalArray.header.stamp = ros::Time::now();
     goalArray.header.frame_id = "map";
-
-    // goalArray.poses = poseArray;
-    
-    // goalArray.poses.pose.position.x = x;
-    // goalArray.poses.pose.position.y = y;
-    // goalArray.poses.pose.orientation.w = 1.0;
     
     ROS_INFO_STREAM("Publishing goal to " << goalArray_pub.getTopic());
     goalArray_pub.publish(goalArray);

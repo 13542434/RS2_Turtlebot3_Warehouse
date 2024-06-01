@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "geometry_msgs/Pose.h"
 
 // Include any other header files this class relies on
 
@@ -23,8 +24,8 @@ public:
     double getPickUpLoc(void) const;
     double getDropOffLoc(void) const;
 
-    std::vector<double> getPickUpCoords(void) const;
-    std::vector<double> getDropOffCoords(void) const;
+    geometry_msgs::Pose getPickUpPose(void) const;
+    geometry_msgs::Pose getDropOffPose(void) const;
     
 protected:
 
@@ -35,9 +36,12 @@ private:
     unsigned int packageNo_;
     unsigned int pickUpLoc_;
     unsigned int dropOffLoc_;
-    std::vector<double> pickUpCoords_;
-    std::vector<double> dropOffCoords_;
-    std::vector<double> getCoordinates(unsigned int location);
+    geometry_msgs::Pose pickUpPose_;
+    geometry_msgs::Pose dropOffPose_;
+    geometry_msgs::Pose getPose(unsigned int location);
+    // std::vector<double> pickUpCoords_;
+    // std::vector<double> dropOffCoords_;
+    // std::vector<double> getCoordinates(unsigned int location);
 
 };
 #endif // ORDER_H

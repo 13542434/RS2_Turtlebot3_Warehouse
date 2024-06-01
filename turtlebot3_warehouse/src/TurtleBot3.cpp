@@ -23,7 +23,7 @@ void TurtleBot3::resetPoseUpdateFlag(void) {
     pose_updated_ = false;
 }
 
-std::vector<std::vector<double>> TurtleBot3::getCurrentAllocation(void) {
+std::vector<geometry_msgs::Pose> TurtleBot3::getCurrentAllocation(void) {
     return currentAllocation_;
 }
 
@@ -31,7 +31,7 @@ unsigned int TurtleBot3::getCurrentAllocationIndex(void) {
     return currentAllocationIndex_;
 }
 
-void TurtleBot3::setCurrentAllocation(std::vector<std::vector<double>> currentAllocation) {
+void TurtleBot3::setCurrentAllocation(std::vector<geometry_msgs::Pose> currentAllocation) {
     currentAllocation_ = currentAllocation;
 }
 

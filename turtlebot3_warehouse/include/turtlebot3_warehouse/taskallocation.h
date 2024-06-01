@@ -63,9 +63,9 @@ private:
     std::string goals_file_path_ = include_file_path_ + "/turtlebot3_warehouse/goals.txt";
 
     std::vector<std::vector<unsigned int>> packageAllocations_; //contains all the task allocations of every order stored by their packageNumber e.g. {{2,1},{3}}
-    std::vector<std::vector<std::vector<double>>> goalAllocations_; //contains all the task allocations of every order stored by their goal coords e.g. {{{1,0},{3,0},{-4,0}},{{-5,3},{-4,0}}}
+    std::vector<std::vector<geometry_msgs::Pose>> goalAllocations_; //contains all the task allocations of every order stored by their goal coords e.g. {{{1,0},{3,0},{-4,0}},{{-5,3},{-4,0}}}
     unsigned int goalAllocationsIndex_ = 0;
-    std::vector<std::vector<double>> singleAllocation_; //only used for controlGoalPasser
+    std::vector<geometry_msgs::Pose> singleAllocation_; //only used for controlGoalPasser
     unsigned int singleAllocationIndex_ = 0; //only used for controlGoalPasser
 
     geometry_msgs::Pose setPose(double x_coord, double y_coord, double z_coord, double roll, double pitch, double yaw);

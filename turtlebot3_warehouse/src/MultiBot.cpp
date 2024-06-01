@@ -50,11 +50,15 @@ void MultiBot::calculateDepotPlans() {
     geometry_msgs::PoseStamped depot_pose;
     // use the dropOffCoords for any Order
     std::vector<Order> orders = taskAllocation_.getOrders();
-    std::vector<double> depotCoords = orders.at(0).getDropOffCoords();
-    depot_pose.pose.position.x = depotCoords.front();
-    depot_pose.pose.position.y = depotCoords.back();
+    geometry_msgs::Pose dropOffPose = orders.at(0).getDropOffPose();
+    // std::vector<double> depotCoords = orders.at(0).getDropOffCoords();
+    depot_pose.pose.position.x = dropOffPose.position.x;
+    depot_pose.pose.position.y = dropOffPose.position.y;
     depot_pose.pose.position.z = 0.0;
-    depot_pose.pose.orientation.w = 1.0;
+    depot_pose.pose.orientation.w = dropOffPose.orientation.w;
+    depot_pose.pose.orientation.x = dropOffPose.orientation.x;
+    depot_pose.pose.orientation.y = dropOffPose.orientation.y;
+    depot_pose.pose.orientation.z = dropOffPose.orientation.z;
 
     // for (int tb = 0; tb < num_tb; ++tb) {
         std::string service_name = "/tb3_0/move_base/make_plan";
@@ -203,8 +207,8 @@ void MultiBot::loadPackages() {
     packageCoordinates.clear();
 
     // Place depot coordinates at the start (using any Order)
-    double pickUpX = orders.at(0).getDropOffCoords().at(0);
-    double pickUpY = orders.at(0).getDropOffCoords().at(1); 
+    double pickUpX = orders.at(0).getDropOffPose().position.x;
+    double pickUpY = orders.at(0).getDropOffPose().position.y; 
     double pickUpZ = 0;
     packageCoordinates.emplace_back(std::make_tuple(pickUpX, pickUpY, pickUpZ));
 
@@ -212,8 +216,8 @@ void MultiBot::loadPackages() {
     for (const Order& order : orders) {
       
         // Retrieve pick-up location coordinates
-        pickUpX = order.getPickUpCoords().at(0);
-        pickUpY = order.getPickUpCoords().at(1); 
+        pickUpX = order.getPickUpPose().position.x;
+        pickUpY = order.getPickUpPose().position.y; 
         pickUpZ = 0;
         // Add to packageCoordinates
         packageCoordinates.emplace_back(std::make_tuple(pickUpX, pickUpY, pickUpZ));

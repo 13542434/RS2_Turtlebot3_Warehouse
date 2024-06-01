@@ -8,8 +8,8 @@ Order::Order(std::string include_file_path, unsigned int packageNo, unsigned int
 include_file_path_(include_file_path), packageNo_(packageNo), pickUpLoc_(pickUpLoc), dropOffLoc_(dropOffLoc)
 {
     std::cout<<"Creating Order..."<<std::endl;
-    pickUpCoords_ = getCoordinates(pickUpLoc_);
-    dropOffCoords_ = getCoordinates(dropOffLoc_);
+    pickUpPose_ = getPose(pickUpLoc_);
+    dropOffPose_ = getPose(dropOffLoc_);
 }
 
 void Order::setPackageNo(unsigned int packageNo)
@@ -38,18 +38,21 @@ double Order::getDropOffLoc(void) const
     return dropOffLoc_;
 }
 
-std::vector<double> Order::getPickUpCoords(void) const
+geometry_msgs::Pose Order::getPickUpPose(void) const
 {
-    return pickUpCoords_;
+    return pickUpPose_;
 }
-std::vector<double> Order::getDropOffCoords(void) const
+geometry_msgs::Pose Order::getDropOffPose(void) const
 {
-    return dropOffCoords_;
+    return dropOffPose_;
 }
 
-std::vector<double> Order::getCoordinates(unsigned int location)
+geometry_msgs::Pose Order::getPose(unsigned int location)
 {
-    std::vector<double> coords;
+    geometry_msgs::Pose pose;
+    pose.orientation.w = 1; //CHANGE: at the moment we just use this orientation but can be changed later
+
+    // std::vector<double> coords;
     std::ifstream addresses_file(addresses_file_path_);
     std::string myText;
     unsigned int addressState = 0;
@@ -122,8 +125,12 @@ std::vector<double> Order::getCoordinates(unsigned int location)
 
                 if (location == locationNum)
                 {
-                    coords.push_back(xCoord);
-                    coords.push_back(yCoord);
+                    pose.position.x = xCoord;
+                    pose.position.y = yCoord;
+
+                    // coords.push_back(xCoord);
+                    // coords.push_back(yCoord);
+
                     // std::cout<<"locationNum: "<<locationNum<<std::endl;
                     // std::cout<<"xCoord: "<<xCoord<<std::endl;
                     // std::cout<<"yCoord: "<<yCoord<<std::endl;
@@ -144,5 +151,5 @@ std::vector<double> Order::getCoordinates(unsigned int location)
     }  
 
 
-    return coords;
+    return pose;
 }
