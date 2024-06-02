@@ -34,9 +34,9 @@
    <param name="transform_tolerance"       value="0.5"/>
    <param name="recovery_alpha_slow"       value="0.00"/>
    <param name="recovery_alpha_fast"       value="0.00"/>
-   <param name="initial_pose_x"            value="0.51"/>
-   <param name="initial_pose_y"            value="3.00"/>
-   <param name="initial_pose_a"            value="0.043"/>
+   <param name="initial_pose_x"            value="-4.1"/>
+   <param name="initial_pose_y"            value="0.32"/>
+   <param name="initial_pose_a"            value="0.00"/>
    <param name="gui_publish_rate"          value="50.0"/>
 
    <remap from="scan"                      to="scan"/>
