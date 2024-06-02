@@ -1,0 +1,87 @@
+[
+{
+  "directory": "/home/nk/catkin_ws/src/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/__/googletest/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock-all.cc.o -c /usr/src/googletest/googlemock/src/gmock-all.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_main_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock_main.dir/src/gmock_main.cc.o -c /usr/src/googletest/googlemock/src/gmock_main.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock_main.cc"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/__/googletest/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/gtest/googlemock",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgmock_EXPORTS -I/usr/src/googletest/googlemock/include -I/usr/src/googletest/googlemock -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gmock.dir/src/gmock-all.cc.o -c /usr/src/googletest/googlemock/src/gmock-all.cc",
+  "file": "/usr/src/googletest/googlemock/src/gmock-all.cc"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/gtest/googlemock/gtest",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_main_EXPORTS -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest_main.dir/src/gtest_main.cc.o -c /usr/src/googletest/googletest/src/gtest_main.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest_main.cc"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/gtest/googlemock/gtest",
+  "command": "/usr/bin/c++  -DGTEST_CREATE_SHARED_LIBRARY=1 -Dgtest_EXPORTS -I/usr/src/googletest/googletest/include -I/usr/src/googletest/googletest  -g -fPIC    -Wall -Wshadow -DGTEST_HAS_PTHREAD=1 -fexceptions -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -o CMakeFiles/gtest.dir/src/gtest-all.cc.o -c /usr/src/googletest/googletest/src/gtest-all.cc",
+  "file": "/usr/src/googletest/googletest/src/gtest-all.cc"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/multi_turtlebot3/turtlebot3_bringup",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_bringup\\\" -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_diagnostics.dir/src/turtlebot3_diagnostics.cpp.o -c /home/nk/catkin_ws/src/multi_turtlebot3/turtlebot3_bringup/src/turtlebot3_diagnostics.cpp",
+  "file": "/home/nk/catkin_ws/src/multi_turtlebot3/turtlebot3_bringup/src/turtlebot3_diagnostics.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/multi_turtlebot3/turtlebot3_slam",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_slam\\\" -I/home/nk/catkin_ws/src/multi_turtlebot3/turtlebot3_slam/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -o CMakeFiles/flat_world_imu_node.dir/src/flat_world_imu_node.cpp.o -c /home/nk/catkin_ws/src/multi_turtlebot3/turtlebot3_slam/src/flat_world_imu_node.cpp",
+  "file": "/home/nk/catkin_ws/src/multi_turtlebot3/turtlebot3_slam/src/flat_world_imu_node.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/turtlebot3_warehouse",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_warehouse\\\" -I/home/nk/catkin_ws/src/turtlebot3_warehouse/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_warehouse_node.dir/src/main.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/main.cpp",
+  "file": "/home/nk/catkin_ws/src/turtlebot3_warehouse/src/main.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/turtlebot3_warehouse",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_warehouse\\\" -I/home/nk/catkin_ws/src/turtlebot3_warehouse/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_warehouse_node.dir/src/SetGoals.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/SetGoals.cpp",
+  "file": "/home/nk/catkin_ws/src/turtlebot3_warehouse/src/SetGoals.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/turtlebot3_warehouse",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_warehouse\\\" -I/home/nk/catkin_ws/src/turtlebot3_warehouse/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_warehouse_node.dir/src/MultiBot.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/MultiBot.cpp",
+  "file": "/home/nk/catkin_ws/src/turtlebot3_warehouse/src/MultiBot.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/turtlebot3_warehouse",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_warehouse\\\" -I/home/nk/catkin_ws/src/turtlebot3_warehouse/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/TurtleBot3.cpp",
+  "file": "/home/nk/catkin_ws/src/turtlebot3_warehouse/src/TurtleBot3.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/turtlebot3_warehouse",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_warehouse\\\" -I/home/nk/catkin_ws/src/turtlebot3_warehouse/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/TurtleBot3Interface.cpp",
+  "file": "/home/nk/catkin_ws/src/turtlebot3_warehouse/src/TurtleBot3Interface.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/turtlebot3_warehouse",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_warehouse\\\" -I/home/nk/catkin_ws/src/turtlebot3_warehouse/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/taskallocation.cpp",
+  "file": "/home/nk/catkin_ws/src/turtlebot3_warehouse/src/taskallocation.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/turtlebot3_warehouse",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"turtlebot3_warehouse\\\" -I/home/nk/catkin_ws/src/turtlebot3_warehouse/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp  -g   -std=c++11 -o CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o -c /home/nk/catkin_ws/src/turtlebot3_warehouse/src/order.cpp",
+  "file": "/home/nk/catkin_ws/src/turtlebot3_warehouse/src/order.cpp"
+},
+{
+  "directory": "/home/nk/catkin_ws/src/build/multibot_layer",
+  "command": "/usr/bin/c++  -DROSCONSOLE_BACKEND_LOG4CXX -DROS_BUILD_SHARED_LIBS=1 -DROS_PACKAGE_NAME=\\\"multibot_layers\\\" -Dmultibot_layer_EXPORTS -I/home/nk/catkin_ws/src/multibot_layer/include -I/opt/ros/melodic/include -I/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp -I/usr/include/eigen3  -g -fPIC   -o CMakeFiles/multibot_layer.dir/src/multibot_layer.cpp.o -c /home/nk/catkin_ws/src/multibot_layer/src/multibot_layer.cpp",
+  "file": "/home/nk/catkin_ws/src/multibot_layer/src/multibot_layer.cpp"
+}
+]

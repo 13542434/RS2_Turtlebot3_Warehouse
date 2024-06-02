@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libmultibot_layer.so -o ../devel/lib/libmultibot_layer.so CMakeFiles/multibot_layer.dir/src/multibot_layer.cpp.o 
