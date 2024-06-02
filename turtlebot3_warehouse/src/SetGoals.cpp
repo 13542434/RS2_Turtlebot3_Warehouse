@@ -36,5 +36,6 @@ void SetGoals::publishGoal(geometry_msgs::Pose pose, std::string frame_id, ros::
     pub.publish(goal);
     ros::spinOnce();
     //if i add ros::spin(); here it publioshes a single goal. What is th eproblem???
+    ros::Duration(1.0).sleep(); //sleep 1 sec
 }
 
