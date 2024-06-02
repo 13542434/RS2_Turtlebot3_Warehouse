@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 
     // Create TSP package allocations (occurs once for all packages before system runs)
     taskAllocation.executeTSP();
-    std::cout<<"TESTING"<<std::endl;
+    // std::cout<<"TESTING"<<std::endl;
     // geometry_msgs::PoseArray goalArray = taskAllocation.controlGoalArray();
     // setGoals.publishGoalArray(goalArray);
 

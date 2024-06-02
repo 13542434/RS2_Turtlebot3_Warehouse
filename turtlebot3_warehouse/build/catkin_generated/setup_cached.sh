@@ -9,5 +9,7 @@ export ROSLISP_PACKAGE_DIRECTORIES='/home/nk/catkin_ws/src/turtlebot3_warehouse/
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/nk/catkin_ws/src/turtlebot3_warehouse/build/devel:$CMAKE_PREFIX_PATH"
-export PWD='/home/nk/.local/share/Trash/files/build.16'
+export LD_LIBRARY_PATH="/home/nk/catkin_ws/src/turtlebot3_warehouse/build/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/nk/catkin_ws/src/turtlebot3_warehouse/build/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PWD='/home/nk/catkin_ws/src/turtlebot3_warehouse/build'
 export ROS_PACKAGE_PATH="/home/nk/catkin_ws/src/turtlebot3_warehouse:$ROS_PACKAGE_PATH"

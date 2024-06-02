@@ -13,10 +13,12 @@ public:
     void publishGoalArray(geometry_msgs::PoseArray goalArray);
     ros::Publisher goal_pub_tb3_0;
     ros::Publisher goal_pub_tb3_1;
+    ros::Publisher goal_pub_tb3_2;
     ros::Publisher goalArray_pub;
 
-    void publishGoal(double x, double y, std::string frame_id, ros::Publisher& pub);
+    void publishGoal(double x, double y, std::string frame_id, ros::Publisher& pub); 
 private:
+
     ros::NodeHandle nh;
     
 };
