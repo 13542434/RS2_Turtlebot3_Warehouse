@@ -364,6 +364,14 @@ void TaskAllocation::goalPasser(void)
                 turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
             }
 
+            if ((goalAllocationsIndex_ >= goalAllocations_.size()-1) && (turtlebotGoalNum < turtlebots_.size())){
+                // if last goalAllocations_ is assigned, all currentAllocation final goals increase y position by turtlebotGoalNum*0.5
+                currentAllocation.back().position.y += turtlebotGoalNum*0.5;
+                std::cout<<"Changing depot position: " << currentAllocation.back().position.x << ", " << currentAllocation.back().position.y << std::endl;
+                turtlebotGoalNum++;
+                turtlebot->setCurrentAllocation(currentAllocation);
+            }
+
             // Output current status for debugging
             std::cout << "Turtlebot " << turtlebotNum << " status: " << (isGoalActive ? "goal active" : "mo active goal") << std::endl;
             std::cout << "Current allocation index: " << currentAllocationIndex << std::endl;

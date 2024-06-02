@@ -85,6 +85,7 @@ private:
     void goalStatusCallback(const actionlib_msgs::GoalStatusArray::ConstPtr& msg, unsigned int turtlebotIndex);
     ros::NodeHandle nh_;
     actionlib_msgs::GoalStatusArray updateGoalStatus(unsigned int turtlebotIndex);
+    unsigned int turtlebotGoalNum = 0;
     
 
     
