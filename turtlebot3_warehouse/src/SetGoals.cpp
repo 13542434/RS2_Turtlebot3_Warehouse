@@ -5,6 +5,7 @@ SetGoals::SetGoals(ros::NodeHandle* nodehandle): nh(*nodehandle) {
     // Initialize publishers for both robots
     goal_pub_tb3_0 = nh.advertise<geometry_msgs::PoseStamped>("/tb3_0/move_base_simple/goal", 10);
     goal_pub_tb3_1 = nh.advertise<geometry_msgs::PoseStamped>("/tb3_1/move_base_simple/goal", 10);
+    goal_pub_tb3_2 = nh.advertise<geometry_msgs::PoseStamped>("/tb3_2/move_base_simple/goal", 10);
     goalArray_pub = nh.advertise<geometry_msgs::PoseArray>("/goalArrayTopic", 10); //CHANGE: Frank to provide the topic
 }
 

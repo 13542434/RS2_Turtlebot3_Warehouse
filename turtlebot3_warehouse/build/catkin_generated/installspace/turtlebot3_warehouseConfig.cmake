@@ -67,8 +67,8 @@ set(turtlebot3_warehouse_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(turtlebot3_warehouse_SOURCE_PREFIX /home/charlize/catkin_ws/src/turtlebot3_warehouse)
-  set(turtlebot3_warehouse_DEVEL_PREFIX /home/charlize/catkin_ws/src/turtlebot3_warehouse/build/devel)
+  set(turtlebot3_warehouse_SOURCE_PREFIX /home/nk/catkin_ws/src/turtlebot3_warehouse)
+  set(turtlebot3_warehouse_DEVEL_PREFIX /home/nk/catkin_ws/src/turtlebot3_warehouse/build/devel)
   set(turtlebot3_warehouse_INSTALL_PREFIX "")
   set(turtlebot3_warehouse_PREFIX ${turtlebot3_warehouse_DEVEL_PREFIX})
 else()
