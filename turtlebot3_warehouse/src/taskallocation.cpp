@@ -349,12 +349,12 @@ void TaskAllocation::goalPasser(void)
                 turtlebot->setCurrentAllocationIndex(currentAllocationIndex);
 
                 if (turtlebotNum == 0) {
-                    setGoals.publishGoal(pose.position.x, pose.position.y, "map", setGoals.goal_pub_tb3_0);
+                    setGoals.publishGoal(pose, "map", setGoals.goal_pub_tb3_0);
                 } else if (turtlebotNum == 1) {
-                    setGoals.publishGoal(pose.position.x, pose.position.y, "map", setGoals.goal_pub_tb3_1);
+                    setGoals.publishGoal(pose, "map", setGoals.goal_pub_tb3_1);
                 }
                 else if (turtlebotNum == 2) {
-                    setGoals.publishGoal(pose.position.x, pose.position.y, "map", setGoals.goal_pub_tb3_2);
+                    setGoals.publishGoal(pose, "map", setGoals.goal_pub_tb3_2);
                 }
             } else if (isGoalSucceeded && (goalAllocationsIndex_ < goalAllocations_.size())){
                 currentAllocation = goalAllocations_.at(goalAllocationsIndex_);

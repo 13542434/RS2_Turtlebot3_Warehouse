@@ -27,7 +27,6 @@ public:
     geometry_msgs::Pose getPickUpPose(void) const;
     geometry_msgs::Pose getDropOffPose(void) const;
     
-protected:
 
 private:
     // Functionality not used elsewhere goes here
@@ -39,6 +38,8 @@ private:
     geometry_msgs::Pose pickUpPose_;
     geometry_msgs::Pose dropOffPose_;
     geometry_msgs::Pose getPose(unsigned int location);
+
+    geometry_msgs::Pose setPose(double x_coord, double y_coord, double z_coord, double roll, double pitch, double yaw);
     // std::vector<double> pickUpCoords_;
     // std::vector<double> dropOffCoords_;
     // std::vector<double> getCoordinates(unsigned int location);

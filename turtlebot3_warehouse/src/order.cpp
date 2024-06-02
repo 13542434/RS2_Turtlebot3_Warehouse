@@ -63,6 +63,8 @@ geometry_msgs::Pose Order::getPose(unsigned int location)
     std::string xCoord_str;
     double yCoord = 0;
     std::string yCoord_str;
+    double yaw = 0;
+    std::string yaw_str;
 
     if (addresses_file.is_open())
     {
@@ -109,12 +111,25 @@ geometry_msgs::Pose Order::getPose(unsigned int location)
                         if (myChar == ',')
                         {
                             yCoord = stod(yCoord_str);
-                            addressState = 0;
+                            addressState++;
                             yCoord_str = "";
                         }
                         else
                         {
                            yCoord_str += myChar;
+                        }
+                        break;
+                    case 3:
+                        // all characters until next comma are the yCoord
+                        if (myChar == ',')
+                        {
+                            yaw = stod(yaw_str);
+                            addressState = 0;
+                            yaw_str = "";
+                        }
+                        else
+                        {
+                           yaw_str += myChar;
                         }
                         break;
                     default:
@@ -125,8 +140,10 @@ geometry_msgs::Pose Order::getPose(unsigned int location)
 
                 if (location == locationNum)
                 {
-                    pose.position.x = xCoord;
-                    pose.position.y = yCoord;
+                    pose = setPose(xCoord, yCoord, 0, 0, 0, yaw);
+                    
+                    // pose.position.x = xCoord;
+                    // pose.position.y = yCoord;
 
                     // coords.push_back(xCoord);
                     // coords.push_back(yCoord);
@@ -140,6 +157,7 @@ geometry_msgs::Pose Order::getPose(unsigned int location)
                 locationNum = 0;
                 xCoord = 0;
                 yCoord = 0;
+                yaw = 0;
             }
             counter++;
             
@@ -150,6 +168,29 @@ geometry_msgs::Pose Order::getPose(unsigned int location)
         std::cout << "package_orders.csv could not be read" <<std::endl;
     }  
 
+
+    return pose;
+}
+
+
+geometry_msgs::Pose Order::setPose(double x_coord, double y_coord, double z_coord, double roll, double pitch, double yaw) 
+{
+    geometry_msgs::Pose pose;
+    pose.position.x = x_coord;
+    pose.position.y = y_coord;
+    pose.position.z = z_coord;
+
+    double cr = cos(roll * 0.5);
+    double sr = sin(roll * 0.5);
+    double cp = cos(pitch * 0.5);
+    double sp = sin(pitch * 0.5);
+    double cy = cos(yaw * 0.5);
+    double sy = sin(yaw * 0.5);
+
+    pose.orientation.w = cr * cp * cy + sr * sp * sy;
+    pose.orientation.x = sr * cp * cy - cr * sp * sy;
+    pose.orientation.y = cr * sp * cy + sr * cp * sy;
+    pose.orientation.z = cr * cp * sy - sr * sp * cy;
 
     return pose;
 }

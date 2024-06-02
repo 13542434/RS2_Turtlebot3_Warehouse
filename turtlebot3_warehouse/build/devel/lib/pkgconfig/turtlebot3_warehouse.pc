@@ -1,4 +1,4 @@
-prefix=/home/nk/catkin_ws/src/turtlebot3_warehouse/build/devel
+prefix=/home/charlize/catkin_ws/src/turtlebot3_warehouse/build/devel
 
 Name: turtlebot3_warehouse
 Description: Description of turtlebot3_warehouse

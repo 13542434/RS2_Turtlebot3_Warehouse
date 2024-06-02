@@ -1,0 +1,9 @@
+# ninja log v5
+17	4685	1717307804	CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3Interface.cpp.o	e97f82f35c21e5c6
+1	5114	1717307804	CMakeFiles/turtlebot3_warehouse_node.dir/src/SetGoals.cpp.o	30d1107ded42f9d0
+0	5138	1717307804	CMakeFiles/turtlebot3_warehouse_node.dir/src/main.cpp.o	83e0f432d50d05f5
+15	5732	1717307805	CMakeFiles/turtlebot3_warehouse_node.dir/src/TurtleBot3.cpp.o	bec674cb93e1a6a5
+1	6339	1717307805	CMakeFiles/turtlebot3_warehouse_node.dir/src/MultiBot.cpp.o	5facf3496f1e03b3
+4689	6396	1717307805	CMakeFiles/turtlebot3_warehouse_node.dir/src/order.cpp.o	eabd87efdb8b71a5
+21	6655	1717307806	CMakeFiles/turtlebot3_warehouse_node.dir/src/taskallocation.cpp.o	1adece32f60097e9
+6655	7009	1717307806	devel/lib/turtlebot3_warehouse/turtlebot3_warehouse_node	859b4755aa6ef6f6

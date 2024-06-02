@@ -11,8 +11,8 @@ SetGoals::SetGoals(ros::NodeHandle* nodehandle): nh(*nodehandle) {
 
 void SetGoals::publishGoals() {
     // Publish goals for the robots using the member publishers
-    publishGoal(5.0, 0.0, "map", goal_pub_tb3_0);
-    publishGoal(3.0, 0.0, "map", goal_pub_tb3_1);
+    // publishGoal(5.0, 0.0, "map", goal_pub_tb3_0);
+    // publishGoal(3.0, 0.0, "map", goal_pub_tb3_1);
 }
 
 void SetGoals::publishGoalArray(geometry_msgs::PoseArray goalArray) {
@@ -26,13 +26,11 @@ void SetGoals::publishGoalArray(geometry_msgs::PoseArray goalArray) {
     ros::spinOnce();
 }
 
-void SetGoals::publishGoal(double x, double y, std::string frame_id, ros::Publisher& pub) {
+void SetGoals::publishGoal(geometry_msgs::Pose pose, std::string frame_id, ros::Publisher& pub) {
     geometry_msgs::PoseStamped goal;
     goal.header.stamp = ros::Time::now();
     goal.header.frame_id = frame_id;
-    goal.pose.position.x = x;
-    goal.pose.position.y = y;
-    goal.pose.orientation.w = 1.0; // Assuming no orientation change
+    goal.pose = pose;
 
     ROS_INFO_STREAM("Publishing goal to " << pub.getTopic());
     pub.publish(goal);
