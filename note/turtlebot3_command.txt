@@ -1,0 +1,42 @@
+
+
+#Launch gazebo map house and navigation 
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_demo_launch ttb3_house_nav.launch 
+
+Innitialise house map
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_gazebo turtlebot3_house.launch
+
+
+Run Navigation node
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/catkin_ws/StaticMap/maphouse.yaml
+
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=/home/qbn-ubun18/maptriaL.yaml
+
+Telo-op
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+
+
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_slam turtlebot3_slam.launch
+
+save map
+rosrun map_server map_saver -f ~/map
+
+Set up remote robot
+echo "export TURTLEBOT3_MODEL=waffle_pi" >> ~/.bashrc
+
+Get computer IP
+ifconfig
+
+
+Telo-op
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+
+tf tree
+rosrun tf view_frames

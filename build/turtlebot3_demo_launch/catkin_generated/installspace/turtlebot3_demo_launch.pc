@@ -1,0 +1,8 @@
+prefix=/home/qbn-ubun18/catkin_ws/install
+
+Name: turtlebot3_demo_launch
+Description: Description of turtlebot3_demo_launch
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

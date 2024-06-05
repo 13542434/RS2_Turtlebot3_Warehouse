@@ -1,0 +1,17 @@
+Start,End,Distance
+Depot,Depot,0
+Depot,pickUpLoc1,19.108
+Depot,pickUpLoc2,15.617
+Depot,pickUpLoc3,15.1911
+pickUpLoc1,Depot,19.108
+pickUpLoc1,pickUpLoc1,0
+pickUpLoc1,pickUpLoc2,8.00895
+pickUpLoc1,pickUpLoc3,12.9176
+pickUpLoc2,Depot,15.617
+pickUpLoc2,pickUpLoc1,8.00895
+pickUpLoc2,pickUpLoc2,0
+pickUpLoc2,pickUpLoc3,9.42828
+pickUpLoc3,Depot,15.1911
+pickUpLoc3,pickUpLoc1,12.9176
+pickUpLoc3,pickUpLoc2,9.42828
+pickUpLoc3,pickUpLoc3,0

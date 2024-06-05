@@ -1,0 +1,16 @@
+<launch>
+
+ 
+
+  <!-- Include the launch file from another package -->
+  <include file="$(find turtlebot3_demo_launch)/launch/ttb3_waffle_pi_house.launch"/>
+   
+
+  <include file="$(find turtlebot3_demo_launch)/launch/ttb3_waffle_pi_navigation.launch">
+    <arg name="map_file" value="$(env HOME)/catkin_ws/StaticMap/maphouse.yaml"/>
+
+  </include>
+
+  <!-- Add additional nodes here -->
+
+</launch>

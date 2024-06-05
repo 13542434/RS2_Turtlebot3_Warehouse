@@ -1,0 +1,36 @@
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=/home/qbn-ubun18/wholemaptrial.yaml
+
+
+/Correct
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/catkin_ws/StaticMap/noblockmap.yaml
+
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/catkin_ws/StaticMap/wholemaptrial.yaml
+
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_navigation turtlebot3_navigation.launch map_file:=$HOME/catkin_ws/StaticMap/anotherMap.yaml
+
+
+SSH into bot
+ssh ubuntu@192.168.0.205
+ping 192.168.0.205
+
+Then nano bashrc for bot
+Change export ROS_MASTER_URI=http://[MY COMPUTERS IP ADDRESS]:11311
+export ROS_IP=https://[MY TURTLEBOT IP ADDRESS]
+	
+run bring up in another turtle bot terminal
+roslaunch turtlebot3_bringup turtlebot3_robot.launch
+
+
+SLAM in rosmaster
+export TURTLEBOT3_MODEL=waffle_pi
+roslaunch turtlebot3_slam turtlebot3_slam.launch
+
+
+rosrun rqt_tf_tree rqt_tf_tree
+
+roswtf
+
