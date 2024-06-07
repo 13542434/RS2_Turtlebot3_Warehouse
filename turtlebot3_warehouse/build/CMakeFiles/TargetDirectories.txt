@@ -1,3 +1,0 @@
-/home/qbn-ubun18/catkin_ws/turtlebot3_warehouse/build/CMakeFiles/rebuild_cache.dir
-/home/qbn-ubun18/catkin_ws/turtlebot3_warehouse/build/CMakeFiles/turtlebot3_warehouse_node.dir
-/home/qbn-ubun18/catkin_ws/turtlebot3_warehouse/build/CMakeFiles/edit_cache.dir
